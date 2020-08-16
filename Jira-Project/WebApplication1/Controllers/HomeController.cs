@@ -12,19 +12,20 @@ namespace WebApplication1.Controllers
     [Controller]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+       
+        public string Index()
         {
 
-            var client = new RestClient("http://localhost:61775/api/api");  //LOCALDEKİ REST API
-            client.Timeout = -1;
+            var client = new RestClient("https://temmuzhvlstaj.atlassian.net/rest/api/3/issue/TSE1-12");  //LOCALDEKİ REST API
             var request = new RestRequest(Method.GET) { RequestFormat = DataFormat.Json };  //POST REQUEST ATILACAK
             var response = client.Execute(request);  //REQUESTİ EXECUTE ET
+            return response.Content;
 
 
-
-            List<Product> Products = JsonConvert.DeserializeObject<List<Product>>(response.Content); //NESNEYE ÇEVİR
-            Product product1 = new Product();
-            return View();
+            //List<Product> Products = JsonConvert.DeserializeObject<List<Product>>(response.Content); //NESNEYE ÇEVİR
+            //Product product1 = new Product();
+            //return View();
         }
     }
 }
