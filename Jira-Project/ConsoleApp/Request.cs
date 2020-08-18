@@ -9,12 +9,11 @@ using RestSharp.Authenticators;
 
 namespace ConsoleApp
 {
-    public static class JiraRequestHelper
+    public static class Request
     {
-        public static string GetIssues()
+        public static string GetIssue(int id)
         {
-            string url = "https://temmuzhvlstaj.atlassian.net//rest/api/3/search?jql=project='TSE1'+and+issuetype='Bug'" +
-                         "&maxResults=100&fields=summary,updated,created,status,creator";
+            string url = "https://temmuzhvlstaj.atlassian.net/rest/api/3/issue/TSE1-" + id;
             var client = new RestClient(url);
             client.Authenticator = new HttpBasicAuthenticator("erenyilmazgazi@gmail.com", "hRoockHDH3qHggg1mIxg886D"); //BASIC AUTH
 
