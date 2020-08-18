@@ -50,11 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Creator.cs" />
-    <Compile Include="Models\Bugs.cs" />
-    <Compile Include="Models\Fields.cs" />
-    <Compile Include="Models\Issue.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="EntityBug.cs" />
+    <Compile Include="EntityChangeLog.cs" />
+    <Compile Include="Models\Bugs\Creator.cs" />
+    <Compile Include="Models\Bugs\Bugs.cs" />
+    <Compile Include="Models\Bugs\Fields.cs" />
+    <Compile Include="Models\Bugs\Issue.cs" />
+    <Compile Include="Models\Bugs\Status.cs" />
+    <Compile Include="Models\ChangeLogs\Author.cs" />
+    <Compile Include="Models\ChangeLogs\BugChangeLogs.cs" />
+    <Compile Include="Models\ChangeLogs\ChangeLog.cs" />
+    <Compile Include="Models\ChangeLogs\History.cs" />
+    <Compile Include="Models\ChangeLogs\ChangeLogIssue.cs" />
+    <Compile Include="Models\ChangeLogs\Item.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JiraRequestHelper.cs" />
