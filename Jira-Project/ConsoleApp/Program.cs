@@ -34,7 +34,7 @@ namespace ConsoleApp
                     Status = issue.Fields.Status.Name
 
                 });
-                //COLLECTION REFERANS TİP!! DÖNGÜ İÇERİSİNDE YAPILAN DEĞİŞİKLİK KALICIDIR
+                
             }
 
             foreach (EntityBug entityBugs in BugList)
@@ -80,7 +80,7 @@ namespace ConsoleApp
 
             //            };
 
-            //            //COLLECTION REFERANS TİP!! DÖNGÜ İÇERİSİNDE YAPILAN DEĞİŞİKLİK KALICIDIR
+            //            
             //            Logs.Add(entityChangeLog);
             //        }
             //    }
