@@ -14,6 +14,7 @@ namespace ConsoleApp
         public string Creator { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
-        public string Status { get; set; }   //ENUM DA OLABİLİR
+        public string Status { get; set; }         //ENUM DA OLABİLİR
+        public double? Severity { get; set; }      //VARSAYILAN NULL
     }
 }

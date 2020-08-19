@@ -1,12 +1,14 @@
-﻿using ConsoleApp.Models.ChangeLogs;
+﻿
 using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp.Models.Bugs;
 
 namespace ConsoleApp
 {
@@ -14,96 +16,58 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            string bugResponse = JiraRequestHelper.GetIssues();
-            Bugs bugs = JsonConvert.DeserializeObject<Bugs>(bugResponse);
-            Console.WriteLine("Issues");
-            Console.WriteLine("-----------------------------------------------------------------------");
+            
+            string response = JiraRequestHelper.GetIssues();
+            Bugs bugs = JsonConvert.DeserializeObject<Bugs>(response);
+
+            List<EntityBug> bugList = new List<EntityBug>();
+            List<EntityChangeLog> logList = new List<EntityChangeLog>();
 
 
-            List<EntityBug> BugList = new List<EntityBug>();
 
             foreach (Issue issue in bugs.Issues)
             {
-                BugList.Add(new EntityBug
+                bugList.Add(new EntityBug
                 {
                     BugID = issue.Key,
                     Summary = issue.Fields.Summary,
+                    Creator = issue.Fields.Creator.DisplayName,
                     CreateDate = issue.Fields.Created,
                     UpdateDate = issue.Fields.Updated,
-                    Creator = issue.Fields.Creator.DisplayName,
-                    Status = issue.Fields.Status.Name
-
+                    Status = issue.Fields.Status.Name,
+                    Severity = issue.Fields.customfield_10029
                 });
-                
+
+                foreach (History history in issue.ChangeLog.Histories)
+                {
+                    foreach (Item item in history.Items)
+                    {
+                        if (item.Field == "status" || item.Field == "Severity")  //SADECE STATUS VE SEVERİTY LOGLARINI EKLE
+                        {
+                            logList.Add(new EntityChangeLog{
+                                
+                                Key = issue.Key,
+                                Author = history.Author.DisplayName,  //KİM DEĞİŞMİŞ
+                                CreatedDate = history.Created,        //NE ZAMAN DEĞİŞMİŞ
+                                Field = item.Field,                   //NEREYİ DEĞİŞMİŞ
+                                FromString = item.FromString,         //ÖNCEKİ DURUMU
+                                toString = item.ToString              //SONRAKİ DURUMU
+
+                            });
+                        }
+                    }
+                }
             }
 
-            foreach (EntityBug entityBugs in BugList)
-            {
-                Console.WriteLine("Key : {0}", entityBugs.BugID);
-                Console.WriteLine("Summary : {0}", entityBugs.Summary);
-                Console.WriteLine("Creator : {0}", entityBugs.Creator);
-                Console.WriteLine("Create Date : {0}", entityBugs.CreateDate);
-                Console.WriteLine("Last Update : {0}", entityBugs.UpdateDate);
-                Console.WriteLine("Status : {0}", entityBugs.Status);
-                Console.WriteLine("-------------------------------------------------------");
-            }
-
-            //--------------------------------------------------------------------------------------------------------------------
-
-            //string changeLogResponse = JiraRequestHelper.GetChangeLogs();
-            //BugChangeLogs changeLogs = JsonConvert.DeserializeObject<BugChangeLogs>(changeLogResponse);
-
-            //List<EntityChangeLog> Logs = new List<EntityChangeLog>();
+            Console.ReadLine();
 
 
 
-            //foreach (ChangeLogIssue issue in changeLogs.Issues)
-            //{
-
-            //    foreach (History history in issue.Changelog.Histories)
-            //    {
-            //        foreach (Item item in history.Items)
-            //        {
-            //            EntityChangeLog entityChangeLog = new EntityChangeLog
-            //            {
-            //                Key = issue.Key,
-            //                Author = history.Author.DisplayName,
-            //                CreatedDate = history.created,
-
-            //                //FIELDS
-            //                Field = item.field,
-            //                FieldType = item.fieldtype,
-            //                From = item.from,
-            //                FromString = item.fromString,
-            //                To = item.to,
-            //                toString = item.toString
-
-            //            };
-
-            //            
-            //            Logs.Add(entityChangeLog);
-            //        }
-            //    }
-            //}
 
 
 
-            //foreach (EntityChangeLog log in Logs)
-            //{
-            //    Console.WriteLine("Key : {0} Author : {1} Created : {2}", log.Key, log.Author, log.CreatedDate);
-            //    Console.WriteLine();
-            //    Console.WriteLine("Fields");
-            //    Console.WriteLine();
-            //    Console.WriteLine("Field : {0}", log.Field);
-            //    Console.WriteLine("FieldType : {0}", log.FieldType);
-            //    Console.WriteLine("From : {0}", log.From);
-            //    Console.WriteLine("FromString : {0}", log.FromString);
-            //    Console.WriteLine("To : {0}", log.To);
-            //    Console.WriteLine("ToString : {0}", log.toString);
-            //    Console.WriteLine();
-            //    Console.WriteLine();
-            //}
-            //Console.ReadLine();
+
+
         }
     }
 }

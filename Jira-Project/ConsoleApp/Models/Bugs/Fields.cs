@@ -14,5 +14,6 @@ namespace ConsoleApp
         public DateTime Updated { get; set; }
         public Creator Creator { get; set; }
         public Status Status { get; set; }
+        public double? customfield_10029 { get; set; }
     }
 }
