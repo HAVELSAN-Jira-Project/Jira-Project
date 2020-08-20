@@ -20,6 +20,7 @@ namespace ConsoleApp
             List<EntityBug> bugs = DeserializeHelper.DeserializeBugs();        //PROJENİN TÜM BUGLARI
             List<EntityChangeLog> logs = DeserializeHelper.DeserializeLogs();  //PROJEDEKİ BUGLARIN TÜM LOGLARI
 
+
             Console.ReadLine();
 
 
