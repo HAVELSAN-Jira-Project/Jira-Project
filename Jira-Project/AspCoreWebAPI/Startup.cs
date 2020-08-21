@@ -2,10 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstract;
+using Business.Concrete;
+using DataAccess.Abstract;
+using DataAccess.Concrete.PostgreSQL;
+using Entities.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +33,13 @@ namespace AspCoreWebAPI
         {
             services.AddControllers();
             services.AddCors();
+            services.AddDbContext<AppDbContext>(options=>options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IBugService, BugManager>();
+            services.AddScoped<ILogService, LogManager>();
+            services.AddScoped<IBugDal, PgBugDal>();
+            services.AddScoped<ILogDal, PgLogDal>();
+            services.AddScoped<IJiraRequestService, JiraRequestManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,11 +49,6 @@ namespace AspCoreWebAPI
                 options.WithOrigins("http://localhost:3000")
                     .AllowAnyHeader()
                     .AllowAnyMethod());
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
             app.UseHttpsRedirection();
 
