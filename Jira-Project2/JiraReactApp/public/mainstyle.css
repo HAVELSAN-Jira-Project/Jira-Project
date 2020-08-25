@@ -1,0 +1,15 @@
+.IntroPage{
+    height: 100%;
+    min-height: 91vh;
+    
+}
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 91vh; /* These two lines are counted as one :-)       */
+    
+}
+
+.ProjectKeyInput{
+    margin-left: 120px;
+}
