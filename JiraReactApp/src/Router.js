@@ -18,7 +18,7 @@ export default function Router() {
                     <Route path="/ProjectKey" component={ProjectPage} />
                     <Route path="/GetData" component={LoadingPage} />
                     <Route path="/Error" component={ErrorPage} />
-                    <Route path="/Home" component={BugsPage} />
+                    <Route path="/Bugs" component={BugsPage} />
                     <Redirect to="/Not-Found"/>
                 </Switch>
             </BrowserRouter>

@@ -39,7 +39,7 @@ export default function LoadingPage(props) {
                 .then(response=>{
                     setAddTables(false)
                     setTimeout(() => {
-                        props.history.push('/Home')
+                        props.history.push('/Bugs')
                         }, 1500);
                 })
                 .catch(error=>{

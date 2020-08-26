@@ -13,3 +13,8 @@
 .ProjectKeyInput{
     margin-left: 120px;
 }
+
+.BugPage{
+    height: 100%;
+    min-height: 91vh;
+}

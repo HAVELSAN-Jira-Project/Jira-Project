@@ -17,7 +17,7 @@ export default function ErrorPage(props) {
                 <div className="container-fluid bg-light">
                 <div className="IntroPage position-relative overflow-hidden text-center bg-light">
                 <div className="col-md-5  mx-auto my-5">
-                <img src={logo} width={150} height={150} class="img-fluid" alt="Error" />
+                <img src={logo} width={125} height={125} class="img-fluid" alt="Error" />
                     <h3 className="mt-4">Bir Hata Oluştu.</h3><br/>
                     <strong>Hata Şu Durumlardan Dolayı Meydana Gelmiş Olabilir.
                         Lütfen Aşağıdaki Durumları Kontrol Edin.</strong><br/>

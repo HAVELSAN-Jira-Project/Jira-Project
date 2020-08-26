@@ -39,11 +39,16 @@ namespace AspCoreWebAPI.Controllers
 
 
         [HttpGet("GetBugs")]
-        public IActionResult GetBugs()
-        {
+        public IActionResult GetBugs(){
             try
             {
-                return Ok(_bugService.ListBugs());
+                GetBugsModel getbugsModel = new GetBugsModel
+                {
+                    Bugs = _bugService.ListBugs(),
+                    BugCount = _bugService.ListBugs().Count,
+                    ProjectKey = JiraRequestManager.ProjectKey
+                };
+                return Ok(getbugsModel);    //MODELİ DÖNDÜR
             }
             catch
             {
