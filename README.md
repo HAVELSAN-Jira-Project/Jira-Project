@@ -17,7 +17,7 @@ Projede Kullanılan Paket ve Kütüphaneler
 - RestSharp(106.11.4)
 
 
-## Frondend
+## Frontend
 
 Projenin Frontend tarafında JavaScript Kütüphanesi Olarak React.js Kullanılmıştır. Github'a pushlanmış olan
 JiraReactApp dosyasını indirip Visual Code veya Başka Bir Editörde Açılması Gerekmektedir.
