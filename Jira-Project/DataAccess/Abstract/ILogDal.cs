@@ -11,5 +11,6 @@ namespace DataAccess.Abstract
         Log ListLog(int id);
         bool Add(List<Log> Logs);
         void ClearLogs();
+        
     }
 }

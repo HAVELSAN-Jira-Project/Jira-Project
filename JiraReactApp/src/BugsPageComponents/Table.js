@@ -13,7 +13,6 @@ export default function Table(props) {
                 <th scope="col" className="text-center">Bug ID</th>
                 <th scope="col" className="text-center">Summary</th>
                 <th scope="col" className="text-center">Creator</th>
-                <th scope="col" className="text-center">Created</th>
                 <th scope="col" className="text-center">Rebound</th>
                 <th scope="col" className="text-center">Status</th>
                 <th scope="col" className="text-center">Severity</th>
@@ -27,8 +26,8 @@ export default function Table(props) {
                            <td className="text-center"><small>{bug.bugID}</small></td>
                            <td style={{width:"20%"}} className="text-center"><small>{bug.summary}</small></td>
                            <td className="text-center"><small>{bug.creator}</small></td>
-                           <td className="text-center"><small>{bug.created}</small></td>
-                           <td style={{width:"5%"}} className="text-center"><small>3</small></td>
+                           
+                           <td style={{width:"5%"}} className="text-center"><small>{bug.rebound}</small></td>
                            <td className="text-center" ><small>{bug.status}</small></td>
                            <td  className="text-center"><small>{bug.severity? bug.severity: <small>-</small>}</small></td>
                            <td className="text-center">

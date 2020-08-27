@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DataAccess.Abstract;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DataAccess.Concrete.PostgreSQL
 {
@@ -45,13 +46,16 @@ namespace DataAccess.Concrete.PostgreSQL
             {
                 return false;
             }
-        }
+        }  //INSERT
 
 
         public void ClearLogs()
         {
             _context.RemoveRange(_context.Logs);
             _context.SaveChanges();
-        }
+        }          //TRUNCATE
+
+
+
     }
 }

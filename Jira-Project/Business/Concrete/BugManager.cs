@@ -5,6 +5,7 @@ using System.Text;
 using Business.JiraDeserializeModels;
 using Business.JiraDeserializeModels.Bugs;
 using DataAccess.Abstract;
+using DataAccess.ViewModels;
 using Entities.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
@@ -24,9 +25,9 @@ namespace Business.Concrete
         }
 
 
-        public List<Bug> ListBugs()  //BUGLARI DBDEN ÇEK
+        public List<ListBugsViewModel> ListBugs()  //BUGLARI DBDEN ÇEK
         {
-            List<Bug> ListBugs = _bugDal.ListBugs();
+            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithRebound();
             return ListBugs;
         }
 
@@ -108,6 +109,29 @@ namespace Business.Concrete
             }
         }   //TRUNCATE TABLE
 
-        
+
+        //TARİH FİLTRESİ
+        public List<ListBugsViewModel> ListBugsFilterbyDate(DateTime targetDate)
+        {
+            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithReboundFilterbyDate(targetDate);
+            return ListBugs;
+        }
+
+
+        //SEVERİTY FİLTRESİ
+        public List<ListBugsViewModel> ListBugsFilterbySeverity(int severity)
+        {
+            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithReboundFilterbySeverity(severity);
+            return ListBugs;
+        }
+
+
+        //ARAMA 
+        public List<ListBugsViewModel> ListSearchedBugs(string text)
+        {
+            List<ListBugsViewModel> ListBugs = _bugDal.ListSearchedBugs(text);
+            return ListBugs;
+        }
+
     }
 }

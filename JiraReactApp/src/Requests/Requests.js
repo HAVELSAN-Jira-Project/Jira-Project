@@ -34,3 +34,19 @@ export const ClearLogs = ()=>{
 
     return axios.get('https://localhost:44310/api/Logs/ClearLogs'); 
 }
+
+
+export const GetBugsFilterbyDate = (day)=>{
+
+    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbyDate?days='+day); 
+}
+
+export const GetBugsFilterbySeverity = (day)=>{
+
+    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbySeverity?severity='+day); 
+}
+
+export const GetSearchedBugs = (text)=>{
+
+    return axios.get('https://localhost:44310/api/Bugs/GetSearchedBugs?text='+text); 
+}
