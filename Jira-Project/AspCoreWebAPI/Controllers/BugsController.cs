@@ -92,18 +92,9 @@ namespace AspCoreWebAPI.Controllers
         [HttpGet("GetBugsFilterbyDate")]
         public IActionResult GetBugsFilterbyDate(int days)
         {
-            try
-            {
-                var BugsbyDate = new List<ListBugsViewModel>();
 
-                if (days == 1000) //FİLTRE YOK, TÜMÜNÜ ÇEK
-                    BugsbyDate = _bugService.ListBugs();
-
-                else //FİLTRELİ VERİYİ ÇEK
-                {
-                    DateTime targetDate = DateTime.Now.AddDays(-days);
-                    BugsbyDate = _bugService.ListBugsFilterbyDate(targetDate);
-                }
+                //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
+                 var BugsbyDate = _bugService.ListBugsFilterbyDate(days);
 
                 GetBugsModel getBugsModel = new GetBugsModel
                 {
@@ -114,60 +105,36 @@ namespace AspCoreWebAPI.Controllers
                 };
 
                 return Ok(getBugsModel);  //MODELİ DÖN
-            }
-            catch
-            {
-                return BadRequest("Buglar Tarihe Göre Filtrelenemedi");
-            }
-
-
+                
         }
+
 
         [HttpGet("GetBugsFilterbySeverity")]
         public IActionResult GetBugsFilterbySeverity(int severity)
         {
-            try
+
+            //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
+            var BugsbySeverity = _bugService.ListBugsFilterbySeverity(severity);
+
+            GetBugsModel getBugsModel = new GetBugsModel
             {
-                var BugsbySeverity = new List<ListBugsViewModel>();
+                Bugs = BugsbySeverity,
+                BugCount = BugsbySeverity.Count,
+                ProjectKey = JiraRequestManager.ProjectKey,
+                TotalRebound = BugsbySeverity.Sum(x => x.Rebound)
+            };
 
-                if (severity == 1000)
-                    BugsbySeverity = _bugService.ListBugs();
-
-                else
-                {
-                    BugsbySeverity = _bugService.ListBugsFilterbySeverity(severity);
-                }
-
-                GetBugsModel getBugsModel = new GetBugsModel
-                {
-                    Bugs = BugsbySeverity,
-                    BugCount = BugsbySeverity.Count,
-                    ProjectKey = JiraRequestManager.ProjectKey,
-                    TotalRebound = BugsbySeverity.Sum(x => x.Rebound)
-                };
-
-                return Ok(getBugsModel);
-            }
-            catch
-            {
-                return BadRequest("Buglar Severity'e göre filtrelenemedi.");
-            }
+            return Ok(getBugsModel);
         }
+
 
 
         [HttpGet("GetSearchedBugs")]
         public IActionResult GetSearchedBugs(string text)
         {
-            try
-            {
-                var SearchedBugs = new List<ListBugsViewModel>();
 
-                if (text == null || text == "")
-                    SearchedBugs = _bugService.ListBugs(); //TÜM BUGLARI GETİR
-                else
-                {
-                    SearchedBugs = _bugService.ListSearchedBugs(text);
-                }
+            //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
+            var SearchedBugs = _bugService.ListSearchedBugs(text);
 
                 GetBugsModel getBugsModel = new GetBugsModel
                 {
@@ -180,11 +147,7 @@ namespace AspCoreWebAPI.Controllers
                 return Ok(getBugsModel);
 
 
-            }
-            catch
-            {
-                return BadRequest("Buglar Aramaya Göre Filtrelenemedi.");
-            }
+            
 
         }
     }

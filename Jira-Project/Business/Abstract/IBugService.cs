@@ -11,7 +11,7 @@ namespace Business.Abstract
         List<ListBugsViewModel> ListBugs();
         bool AddBugs();
         bool ClearBugs();
-        List<ListBugsViewModel> ListBugsFilterbyDate(DateTime targetDate);
+        List<ListBugsViewModel> ListBugsFilterbyDate(int targetDate);
         List<ListBugsViewModel> ListBugsFilterbySeverity(int severity);
         List<ListBugsViewModel> ListSearchedBugs(string text);
 

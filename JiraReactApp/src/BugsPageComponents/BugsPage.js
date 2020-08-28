@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../IntroComponents/Header'
-import Info from './Info'
-import Filters2 from '../BugsPageComponents/Filters2'
+import BugInfo from './BugInfo'
+import FilterBugs from './FilterBugs'
 import {Row,Col} from 'reactstrap'
 import {useState,useEffect} from 'react'
 import Table from './Table'
@@ -13,6 +13,13 @@ export default function MainPage(props) {
     const[SeverityValue,setSeverityValue] = useState(1000);
     const[Searchtext,setSearchText] = useState(null);
 
+
+    //SPINNERS
+    const[UpdateButtonDisable,setUpdateButton] = useState(false);
+    const[ChangeProjectDisable,setChangeProjectButton] = useState(false);
+    const[LogsButtonDisable,setLogsButton] = useState(false);
+    
+
     
     useEffect(()=>{  //TARİH DEĞİŞTİĞİNDE STATE'E SETLE,REQEUST AT.DÖNEN LİSETYİ BUGSA SETLE. 
                      //BUGS İÇERİĞİ DEĞİŞTİĞİNDE, COMPONENT YENİDEN RENDER EDİLİR.
@@ -22,8 +29,9 @@ export default function MainPage(props) {
             setBugs(response.data)
         })
         .catch(error=>{
-            props.history.push("/Not-Found")
+            props.history.push("/Error")
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[DateValue])  //TARİH DEĞİŞTİĞİ ANDA TETİKLEN
 
 
@@ -35,10 +43,11 @@ export default function MainPage(props) {
             setBugs(response.data)
         })
         .catch(error=>{
-            props.history.push("/Not-Found")
+            props.history.push("/Error")
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[SeverityValue])  //SEVERİTY DEĞİŞTİĞİ ANDA TETİKLEN
-    
+
 
     const DateChange = (event)=>{ 
         
@@ -62,16 +71,44 @@ export default function MainPage(props) {
             setBugs(response.data)
         })
         .catch(error=>{
-            props.history.push("/Not-Found")
+            props.history.push("/Error")
         })
     }
+
+    const UpdateButtonClick = () =>{  //UPDATE ROUTE
+        setUpdateButton(true);
+
+        setTimeout(() => {
+            setUpdateButton(false);
+            props.history.push('/GetData')
+            }, 1500);
+    }
+
+    const ChangeProjectButtonClick = () =>{  //CHANGE PROJECT ROUTE
+        setChangeProjectButton(true);
+
+        setTimeout(() => {
+            setChangeProjectButton(false);
+            props.history.push('/ProjectKey')
+            }, 1500);
+    }
+
+    const LogsPageButtonClick = () =>{  //CHANGE PROJECT ROUTE
+        setLogsButton(true);
+
+        setTimeout(() => {
+            setLogsButton(false);
+            props.history.push('/Logs')
+            }, 1500);
+    }
+    
     return (
         <div>
             <Header />
             <div className="BugPage container-fluid bg-light">
                 
-                <Info  BugCount = {Bugs.bugCount} ProjectKey = {Bugs.projectKey} />   
-                <Filters2 SearchInputChange={SearchInputChange} SearchButtonClick={SearchButtonClick}  
+                <BugInfo  BugCount = {Bugs.bugCount} ProjectKey = {Bugs.projectKey} />   
+                <FilterBugs SearchInputChange={SearchInputChange} SearchButtonClick={SearchButtonClick}  
                 DateChange = {DateChange} SeverityChange={SeverityChange}/>
 
                 <Row className="my-1">
@@ -80,14 +117,22 @@ export default function MainPage(props) {
                         <small>Totalde <b>{Bugs.totalRebound}</b> Rebound</small>
                     </Col>
                     <Col md="6" className="text-right">
-                        <button type="button" className="btn btn-sm btn-outline-primary raunded">
-                        Güncelle</button>
 
-                        <button type="button" className="btn btn-sm btn-outline-primary ml-2 raunded">
-                        Proje Değiştir</button>
+                        <button disabled={UpdateButtonDisable} onClick={()=>UpdateButtonClick()} 
+                        type="button" className="btn btn-sm btn-outline-primary raunded">
+                        {UpdateButtonDisable? 
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                        </span>:null} Güncelle</button>
 
-                        <button type="button" className="btn btn-sm btn-outline-primary ml-2 raunded">
-                        Tüm Loglar</button>
+                        <button type="button" onClick={()=>ChangeProjectButtonClick()} className="btn btn-sm btn-outline-primary ml-2 raunded">
+                        {ChangeProjectDisable? 
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        :null}  Proje Değiştir</button>
+
+                        <button onClick={()=>LogsPageButtonClick()} type="button" className="btn btn-sm btn-outline-primary ml-2 raunded">
+                        {LogsButtonDisable ?
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        :null} Tüm Loglar</button>
 
                     </Col>
                     <Col md="2"></Col>

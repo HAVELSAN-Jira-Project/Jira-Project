@@ -7,61 +7,55 @@ import {ClearBugs,ClearLogs,AddBugs,AddLogs} from '../Requests/Requests'
 
 export default function LoadingPage(props) {
     
-    const[ClearTables,setClearTables] = useState(false);    //STATE MANTIĞINDA. DEĞERİ HER DEĞİŞTİĞİNDE COMPONENT
+                                                            //STATE MANTIĞINDA. DEĞERİ HER DEĞİŞTİĞİNDE COMPONENT
                                                             //YENİDEN RENDER EDİLİR.
-    const[AddTables,setAddTables] = useState(false);        //TABLOLARIN SETLENMESİ İÇİN
+                                                       
 
-    const[TableErrors,setTableErrors] = useState(false);   //TABLOLAR SETLENİRKEN HATA DÖNMESİ 
+    const[AddTables,setAddTables] = useState(false);        //TABLOLARIN SETLENMESİ İÇİN
  
     const[PendingApi,setPendingApi] = useState(false);
     
       
-    //VERİTABANI TEMİZLEME REQUESTLERİ
-    useEffect(()=>{                                    //SAYFA HER YENİLENDİĞİNDE (RENDER EDİLMESİ DE DAHİL) ÇALIŞIR.
-        if(!ClearTables){
-            ClearLogs()
-            .then(response=>{
-                ClearBugs();
-                setClearTables(true)
-            })
-        }
-       
-        
-    })
+    
     
     //VERİTABANI EKLEME REQUESTLERİ
     useEffect(()=>{  
         if(AddTables){
             setPendingApi(true) //YÜKLEME EKRANINI AÇ
-            AddBugs()
+            ClearLogs()
             .then(response=>{
-                AddLogs()
+                ClearBugs()
                 .then(response=>{
-                    setAddTables(false)
-                    setTimeout(() => {
-                        props.history.push('/Bugs')
-                        }, 1500);
+                    AddBugs()
+                    .then(response=>{
+                        AddLogs()
+                        .then(response=>{
+                            setTimeout(() => {
+                                props.history.push('/Bugs')
+                                }, 1500);
+                        })
+                        .catch(error=>{
+                            setTimeout(() => {
+                                props.history.push('/Error')
+                                }, 1500);
+                        })
+                    })
+                    .catch(error=>{
+                        setTimeout(() => {
+                            props.history.push('/Error')
+                            }, 1500);
+                    })
                 })
                 .catch(error=>{
-                    setTableErrors(true)
+                    setTimeout(() => {
+                        props.history.push('/Error')
+                        }, 1500);
                 })
             })
-            .catch(error=>{
-                setTableErrors(true)
-            })
-                  
-        }                       
+
+        }                         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[AddTables]);
-
-
-    //ERROR DURUMUNDA YÖNLENDİRME
-    useEffect(()=>{
-        if(TableErrors)
-        setTimeout(() => {
-            props.history.push('/Error')
-            }, 1500);
-    },[TableErrors])
 
 
     return (

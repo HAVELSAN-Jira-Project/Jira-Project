@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DataAccess.Abstract;
+using DataAccess.ViewModels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DataAccess.Concrete.PostgreSQL
@@ -18,9 +19,20 @@ namespace DataAccess.Concrete.PostgreSQL
         }
 
 
-        public List<Log> ListLogs()       //GET ALL
+        public List<ListLogsViewModel> ListLogs()       //GET ALL
         {
-            return _context.Logs.ToList();
+            var result = (from logs in _context.Logs
+                          select new ListLogsViewModel
+                            {
+                                BugID = logs.BugID,
+                                Author = logs.Author,
+                                Created = logs.Created,
+                                Field = logs.Field,
+                                FromString = logs.FromString,
+                                toString = logs.toString
+                            }).ToList();
+
+            return result;
         }
 
 
@@ -56,6 +68,22 @@ namespace DataAccess.Concrete.PostgreSQL
         }          //TRUNCATE
 
 
+        public List<ListLogsViewModel> ListLogsFiltebyDate(DateTime limitDate)   //FILTER BY DATE
+        {
+            var result = (from logs in _context.Logs
+                            where DateTime.Compare(logs.Created, limitDate) > 0
+                            select new ListLogsViewModel
+                            {
+                                BugID = logs.BugID,
+                                Author = logs.Author,
+                                Created = logs.Created,
+                                Field = logs.Field,
+                                FromString = logs.FromString,
+                                toString = logs.toString
+                            }).ToList();
+
+            return result;
+        }
 
     }
 }

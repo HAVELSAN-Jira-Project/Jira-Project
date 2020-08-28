@@ -41,12 +41,17 @@ export const GetBugsFilterbyDate = (day)=>{
     return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbyDate?days='+day); 
 }
 
-export const GetBugsFilterbySeverity = (day)=>{
+export const GetBugsFilterbySeverity = (severity)=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbySeverity?severity='+day); 
+    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbySeverity?severity='+severity); 
 }
 
 export const GetSearchedBugs = (text)=>{
 
     return axios.get('https://localhost:44310/api/Bugs/GetSearchedBugs?text='+text); 
+}
+
+export const GetLogsFilterbyDate = (day)=>{
+
+    return axios.get('https://localhost:44310/api/Logs/GetLogsFilterbyDate?day='+day); 
 }

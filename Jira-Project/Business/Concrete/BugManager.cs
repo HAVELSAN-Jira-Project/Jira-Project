@@ -111,26 +111,74 @@ namespace Business.Concrete
 
 
         //TARİH FİLTRESİ
-        public List<ListBugsViewModel> ListBugsFilterbyDate(DateTime targetDate)
+        public List<ListBugsViewModel> ListBugsFilterbyDate(int targetDate)
         {
-            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithReboundFilterbyDate(targetDate);
-            return ListBugs;
+            try
+            {
+                var BugsbyDate = new List<ListBugsViewModel>();
+
+                if (targetDate == 1000) //FİLTRE YOK, TÜMÜNÜ ÇEK
+                    BugsbyDate = _bugDal.ListBugsWithRebound();
+
+                else //FİLTRELİ VERİYİ ÇEK
+                {
+                    DateTime limitDate = DateTime.Now.AddDays(-targetDate);
+                    BugsbyDate = _bugDal.ListBugsWithReboundFilterbyDate(limitDate);
+                }
+
+                return BugsbyDate;
+            }
+            catch
+            {
+                throw new ApplicationException("Buglar Tarihe Göre Filtrelenemedi");
+            }
         }
 
 
         //SEVERİTY FİLTRESİ
         public List<ListBugsViewModel> ListBugsFilterbySeverity(int severity)
         {
-            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithReboundFilterbySeverity(severity);
-            return ListBugs;
+            try
+            {
+                var BugsbySeverity = new List<ListBugsViewModel>();
+
+                if (severity == 1000)
+                    BugsbySeverity = _bugDal.ListBugsWithRebound();
+
+                else
+                {
+                    BugsbySeverity = _bugDal.ListBugsWithReboundFilterbySeverity(severity);
+                }
+
+                return BugsbySeverity;
+            }
+            catch
+            {
+                throw new ApplicationException("Buglar Severity'e göre filtrelenemedi.");
+            }
         }
 
 
         //ARAMA 
         public List<ListBugsViewModel> ListSearchedBugs(string text)
         {
-            List<ListBugsViewModel> ListBugs = _bugDal.ListSearchedBugs(text);
-            return ListBugs;
+            try
+            {
+                var SearchedBugs = new List<ListBugsViewModel>();
+
+                if (text == null || text == "")
+                    SearchedBugs = _bugDal.ListBugsWithRebound();    //TÜM BUGLARI GETİR
+                else
+                {
+                    SearchedBugs = _bugDal.ListSearchedBugs(text);   //FİLTRELİ BUGLARI GETİR
+                }
+
+                return SearchedBugs;
+            }
+            catch
+            {
+                throw new ApplicationException("Bir Hata Oluştu");
+            }
         }
 
     }

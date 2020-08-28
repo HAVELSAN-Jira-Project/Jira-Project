@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspCoreWebAPI.Models.LogsModels;
 using Business.Abstract;
 using Business.Concrete;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,22 @@ namespace AspCoreWebAPI.Controllers
                 return Ok("Logs Tablosu Başarıyla Sıfırlandı.");
             else
                 return BadRequest("Logs Tablosu Sıfırlanamadı.");
+        }
+
+
+        [HttpGet("GetLogsFilterbyDate")]
+        public IActionResult GetLogsFilterbyDate(int day)
+        {
+            var GetLogsFilterbyDate = _logService.ListLogsFilterbyDate(day);
+
+            GetLogsModel getLogsModel = new GetLogsModel
+            {
+                Logs = GetLogsFilterbyDate,
+                LogCount = GetLogsFilterbyDate.Count,
+                ProjectKey = JiraRequestManager.ProjectKey
+            };
+
+            return Ok(getLogsModel);
         }
     }
 }

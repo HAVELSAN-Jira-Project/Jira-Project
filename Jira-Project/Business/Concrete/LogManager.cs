@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DataAccess.ViewModels;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Business.Concrete
@@ -22,9 +23,9 @@ namespace Business.Concrete
             _logDal = logDal;
         }
 
-        public List<Log> ListLogs()  //LOGLARI DBDEN ÇEK
+        public List<ListLogsViewModel> ListLogs()  //LOGLARI DBDEN ÇEK
         {
-            List<Log> Logs = _logDal.ListLogs();
+            List<ListLogsViewModel> Logs = _logDal.ListLogs();
             return Logs;
         }
 
@@ -112,5 +113,28 @@ namespace Business.Concrete
                 return false;
             }
         }  //TRUNCATE TABLE
+
+
+        public List<ListLogsViewModel> ListLogsFilterbyDate(int day)
+        {
+            try
+            {
+                List<ListLogsViewModel> GetLogs = new List<ListLogsViewModel>();
+
+                if (day == 1000)
+                    GetLogs = _logDal.ListLogs();  //FİLTER YOK, TÜM LOGLARI ÇEK
+                else
+                {
+                   DateTime limitDate = DateTime.Now.AddDays(-day);
+                   GetLogs = _logDal.ListLogsFiltebyDate(limitDate);
+                }
+
+                return GetLogs;
+            }
+            catch
+            {
+                throw new ApplicationException("Loglar Tarihe Göre Filtrelenemedi.");
+            }
+        }
     }
 }
