@@ -6,6 +6,9 @@ import {Row,Col} from 'reactstrap'
 import {useState,useEffect} from 'react'
 import Table from './Table'
 import {GetBugsFilterbyDate,GetBugsFilterbySeverity,GetSearchedBugs} from '../Requests/Requests'
+import ReactToExcel from 'react-html-table-to-excel'
+
+
 export default function MainPage(props) {
 
     const [Bugs,setBugs] = useState({bugs : [], BugCount : 0, ProjectKey : "", totalRebound : 0});
@@ -14,10 +17,11 @@ export default function MainPage(props) {
     const[Searchtext,setSearchText] = useState(null);
 
 
-    //SPINNERS
+    //BUTTON SPINNERS
     const[UpdateButtonDisable,setUpdateButton] = useState(false);
     const[ChangeProjectDisable,setChangeProjectButton] = useState(false);
     const[LogsButtonDisable,setLogsButton] = useState(false);
+    const[LogDetailButtonDisable,setLogDetailButton] = useState(false);
     
 
     
@@ -101,6 +105,24 @@ export default function MainPage(props) {
             props.history.push('/Logs')
             }, 1500);
     }
+
+
+   const LogButtonClick = (id)=>{    //LOG BUTONUNA TIKLANDIĞINDA
+    setLogDetailButton(true);
+    const value = id;
+
+       setTimeout(()=>{
+        setLogDetailButton(false);
+
+        props.history.push({
+            pathname:"/LogDetails",
+            state:{
+                BugID: value
+             }
+           });
+       },250)
+    
+   }
     
     return (
         <div>
@@ -117,6 +139,14 @@ export default function MainPage(props) {
                         <small>Totalde <b>{Bugs.totalRebound}</b> Rebound</small>
                     </Col>
                     <Col md="6" className="text-right">
+
+                    <ReactToExcel 
+                            className="btn btn-sm btn-outline-primary mr-2"
+                            table="AllBugsTable"
+                            filename = "Bugs"
+                            sheet="Logs"
+                            buttonText="Excel"/>
+                  
 
                         <button disabled={UpdateButtonDisable} onClick={()=>UpdateButtonClick()} 
                         type="button" className="btn btn-sm btn-outline-primary raunded">
@@ -138,11 +168,13 @@ export default function MainPage(props) {
                     <Col md="2"></Col>
                 </Row>
 
-                <Row className="mb-4">
+                <Row className="mb-5">
                     <Col md="2"></Col>
                     <Col md="8">
                         <div className="d-flex bg-white align-items-center  rounded shadow-sm border border-primary">
-                           <Table Bugs={Bugs.bugs} />
+
+                           <Table Bugs={Bugs.bugs} LogButtonClick={LogButtonClick} LogDetailButtonDisable={LogDetailButtonDisable} />
+
                         </div>
                     </Col>
                     <Col md="2"></Col>

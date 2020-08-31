@@ -48,6 +48,21 @@ namespace AspCoreWebAPI.Controllers
             }
         }
 
+        [HttpGet("GetLogsbyID")]
+        public IActionResult GetLogsbyID(string id)
+        {
+            var result = _logService.ListLogsbyID(id);
+
+            GetLogsModel getLogsModel = new GetLogsModel
+            {
+                Logs = result,
+                LogCount = result.Count,
+                ProjectKey = JiraRequestManager.ProjectKey
+            };
+
+            return Ok(getLogsModel);
+        }
+
 
         [HttpGet("ClearLogs")]
         public IActionResult ClearLogs()
@@ -69,6 +84,22 @@ namespace AspCoreWebAPI.Controllers
             {
                 Logs = GetLogsFilterbyDate,
                 LogCount = GetLogsFilterbyDate.Count,
+                ProjectKey = JiraRequestManager.ProjectKey
+            };
+
+            return Ok(getLogsModel);
+        }
+
+
+        [HttpGet("GetLogsFilterbyStatus")]
+        public IActionResult GetLogsFilterbyStatus(int statusID)
+        {
+            var getLogsFilterbyStatus = _logService.ListLogsFilterbyStatus(statusID);
+
+            GetLogsModel getLogsModel = new GetLogsModel
+            {
+                Logs = getLogsFilterbyStatus,
+                LogCount = getLogsFilterbyStatus.Count,
                 ProjectKey = JiraRequestManager.ProjectKey
             };
 

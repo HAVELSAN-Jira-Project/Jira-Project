@@ -12,6 +12,8 @@ namespace Business.Abstract
         bool AddLogs();
         bool ClearLogs();
         List<ListLogsViewModel> ListLogsFilterbyDate(int day);
+        List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID);
+        List<ListLogsViewModel> ListLogsbyID(string id);
 
     }
 }

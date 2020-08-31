@@ -6,6 +6,7 @@ import LoadingPage from './LoadingPageComponents/LoadingPage'
 import ErrorPage from './LoadingPageComponents/ErrorPage'
 import BugsPage from './BugsPageComponents/BugsPage'
 import LogsPage from './LogsPageComponent/LogsPage'
+import LogDetails from './LogsPageComponent/LogDetails'
 import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
 
 
@@ -21,6 +22,7 @@ export default function Router() {
                     <Route path="/Error" component={ErrorPage} />
                     <Route path="/Bugs" component={BugsPage} />
                     <Route path="/Logs" component={LogsPage} />
+                    <Route path="/LogDetails" component={LogDetails} />
                     <Redirect to="/Not-Found"/>
                 </Switch>
             </BrowserRouter>

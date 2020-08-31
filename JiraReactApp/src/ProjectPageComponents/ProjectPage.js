@@ -35,20 +35,16 @@ export default class ProjectPage extends Component {
 
         PostProjectKey(body)
         .then(response=>{  //SUCCESS
-            this.setState({PendingApi:false})
+            
             return response.data
 
         })
         .then(data=>{
-            swal({
-                title: "Başarılı!",
-                text: "Proje Numarası Kaydedildi",
-                icon: "success",
-                timer : 1000  
-              });  
               
               setTimeout(() => {
-                this.props.history.push('/GetData')
+                
+                this.props.history.push('/GetData');
+                this.setState({PendingApi:false})
                 }, 1500);
         })
         
@@ -60,8 +56,6 @@ export default class ProjectPage extends Component {
             : this.setState({ErrorResponse:error.response.data})
         })
     }
-
-     
 
 
     render() {
@@ -85,7 +79,7 @@ export default class ProjectPage extends Component {
 
                                 {this.state.PendingApi? 
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                 :null }  Kaydet
+                                 :null }  İleri
                             </button>
 
                         </div>

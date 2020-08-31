@@ -18,3 +18,7 @@
     height: 100%;
     min-height: 91vh;
 }
+
+.TableBorder {
+    border: 1px solid rgb(89, 161, 255);
+}

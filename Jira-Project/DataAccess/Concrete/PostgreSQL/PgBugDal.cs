@@ -14,19 +14,14 @@ namespace DataAccess.Concrete.PostgreSQL
     public class PgBugDal : IBugDal
     {
         private readonly AppDbContext _context;
-       
+
 
         public PgBugDal(AppDbContext context)
         {
             _context = context;
-            
+
         }
 
-
-        private List<Bug> ListBugs() //GET ALL
-        {
-            return _context.Bugs.ToList();
-        }
 
 
         public Bug ListBug(int id) //GET 
@@ -71,9 +66,8 @@ namespace DataAccess.Concrete.PostgreSQL
         {
             List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
 
-            List<Bug> allBugs = ListBugs();   //BUGLARI ÇEK
-           
-            foreach (Bug bug in allBugs)      //TEK TEK HEPSİNİN REBOUNDUNU BUL
+
+            foreach (Bug bug in _context.Bugs.ToList())      //TÜM BUGLARIN HEPSİNİN REBOUNDUNU BUL
             {
                 listBugs.Add(new ListBugsViewModel  //HER BUGU TEKER TEKER MODELE SETLE
                 {
@@ -97,11 +91,10 @@ namespace DataAccess.Concrete.PostgreSQL
         {
             List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
 
-            List<Bug> allBugs = ListBugs();   //BUGLARI ÇEK
 
-            foreach (Bug bug in allBugs)      //TEK TEK HEPSİNİN REBOUNDUNU BUL
+            foreach (Bug bug in _context.Bugs.ToList())      //TEK TEK HEPSİNİN REBOUNDUNU BUL
             {
-                if (DateTime.Compare(bug.Created,targetTime) > 0)   //CREATED, GELEN TARİHTEN İLERİ İSE
+                if (DateTime.Compare(bug.Created, targetTime) > 0)   //CREATED, GELEN TARİHTEN İLERİ İSE
                 {
                     listBugs.Add(new ListBugsViewModel  //SADECE TARİH ŞARTINI SAĞLAYAN BUGLARI SETLE
                     {
@@ -112,9 +105,9 @@ namespace DataAccess.Concrete.PostgreSQL
                         Status = bug.Status,
                         Severity = bug.Severity,
 
-                        
+
                         Rebound = GetRebound(bug.BugID)
-                     });
+                    });
                 }
 
             }
@@ -127,11 +120,10 @@ namespace DataAccess.Concrete.PostgreSQL
         {
             List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
 
-            List<Bug> allBugs = ListBugs();   //BUGLARI ÇEK
 
-            foreach (Bug bug in allBugs)      
+            foreach (Bug bug in _context.Bugs.ToList())
             {
-                if (bug.Severity == severity)   
+                if (bug.Severity == severity)
                 {
                     listBugs.Add(new ListBugsViewModel  //SADECE SEVERİTY EŞLEŞEN KAYITLAR
                     {
@@ -142,7 +134,7 @@ namespace DataAccess.Concrete.PostgreSQL
                         Status = bug.Status,
                         Severity = bug.Severity,
 
-                        
+
                         Rebound = GetRebound(bug.BugID)
                     });
                 }
@@ -155,7 +147,7 @@ namespace DataAccess.Concrete.PostgreSQL
 
         private int GetRebound(string bugID)
         {
-            int reboundCount = _context.Logs.Where(x=>x.BugID==bugID && x.FromString=="Done" && x.toString=="In Progress").Count();
+            int reboundCount = _context.Logs.Where(x => x.BugID == bugID && x.FromString == "Done" && x.toString == "In Progress").Count();
             return reboundCount;
         }  //GET REBOUNDS
 
@@ -164,13 +156,12 @@ namespace DataAccess.Concrete.PostgreSQL
         {
             List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
 
-            List<Bug> allBugs = ListBugs();   //BUGLARI ÇEK
 
-            foreach (Bug bug in allBugs)      
+            foreach (Bug bug in _context.Bugs.ToList())
             {
                 if (bug.Summary.ToLower().Contains(text.ToLower()))   //SUMMARY, GELEN STRİNGİ İÇERİYORSA LİSTEYE EKLE
                 {
-                    listBugs.Add(new ListBugsViewModel  
+                    listBugs.Add(new ListBugsViewModel
                     {
                         BugID = bug.BugID,
                         Summary = bug.Summary,

@@ -30,6 +30,18 @@ namespace Business.Concrete
         }
 
 
+        public List<ListLogsViewModel> ListLogsbyID(string id)  //LİST LOGS BY ID
+        {
+            if (id == null)
+            {
+                throw new  ApplicationException("BugID Hatalı.");
+            }
+
+            var result = _logDal.ListLogsbyID(id);
+            return result;
+        }
+
+
         public bool AddLogs()     //LOGLARI DBYE EKLE
         {
             try
@@ -135,6 +147,27 @@ namespace Business.Concrete
             {
                 throw new ApplicationException("Loglar Tarihe Göre Filtrelenemedi.");
             }
-        }
+        }  //FILTER BY DATE
+
+
+        public List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID)
+        {
+            try
+            {
+                var getLogs = new List<ListLogsViewModel>();
+
+                if (statusID == 1000)   //FİLTRE YOK, TÜMÜNÜ GETİR
+                    getLogs = _logDal.ListLogs();
+                else                    //FİLTREYE GÖRE GETİR
+                    getLogs = _logDal.ListLogsFilterbyStatus(statusID);
+
+
+                return getLogs;
+            }
+            catch
+            {
+                throw new ApplicationException("Loglar Statüye Göre Filtrelenemedi");
+            }
+        }  //FILTER BY STATUS
     }
 }

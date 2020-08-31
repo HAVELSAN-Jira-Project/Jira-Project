@@ -4,7 +4,7 @@ import FilterLogo from '../Filter2.png'
 
 export default function FilterLogs(props) {
     
-    const{DateValueChange,SeverityChange,SearchInputChange,SearchButtonClick} = props;
+    const{DateValueChange,StatusValueChange} = props;
     return (
        <Row>
            <Col md="2"></Col>
@@ -27,14 +27,14 @@ export default function FilterLogs(props) {
                     <Col md="2">
                     <div className=" mr-3">
                         <h6 className="mr-5">Statü</h6>
-                        <select className="form-control-sm" onChange={SeverityChange}>
+                        <select className="form-control-sm" onChange={StatusValueChange}>
                                 <option value="1000">Tümü</option>
                                 <option value="1">To Do == In Progress</option>
                                 <option value="2">To Do == Done</option>
                                 <option value="3">In Progress == To Do</option>
                                 <option value="4">In Progress == Done</option>
                                 <option value="5">Done == To Do</option>
-                                <option value="5">Done == In Progress</option>
+                                <option value="6">Done == In Progress</option>
                                 
                         </select>      
                         </div>

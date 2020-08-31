@@ -2,13 +2,11 @@ import React from 'react'
 
 export default function Table(props) {
 
-    const Click = (id)=>{
-        alert(id)
-    }
-    const {Bugs} = props;
+    
+    const {Bugs,LogButtonClick,LogDetailButtonDisable} = props;
 
     return (
-        <table className="table table-sm table-hover">
+        <table className="table table-sm table-hover" id="AllBugsTable">
             <thead>
                 <th scope="col" className="text-center">Bug ID</th>
                 <th scope="col" className="text-center">Summary</th>
@@ -32,8 +30,8 @@ export default function Table(props) {
                            <td  className="text-center"><small>{bug.severity? bug.severity: <small>-</small>}</small></td>
                            <td className="text-center">
                                <button type="button" className="btn btn-sm btn-outline-primary"
-                               onClick={()=>Click(bug.created.substring(8,10))}>Log</button> 
-                            </td>
+                                onClick={()=>LogButtonClick(bug.bugID)}> Log</button>     
+                           </td>
                        </tr>
                    ))}
                

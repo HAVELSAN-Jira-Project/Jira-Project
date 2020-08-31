@@ -11,7 +11,7 @@ export default function LoadingPage(props) {
                                                             //YENİDEN RENDER EDİLİR.
                                                        
 
-    const[AddTables,setAddTables] = useState(false);        //TABLOLARIN SETLENMESİ İÇİN
+    const[AddTables,setAddTables] = useState(true);        //TABLOLARIN SETLENMESİ İÇİN
  
     const[PendingApi,setPendingApi] = useState(false);
     
@@ -31,6 +31,7 @@ export default function LoadingPage(props) {
                         AddLogs()
                         .then(response=>{
                             setTimeout(() => {
+                                setAddTables(false);
                                 props.history.push('/Bugs')
                                 }, 1500);
                         })
@@ -62,9 +63,8 @@ export default function LoadingPage(props) {
         <div>
             <Header />
             <div className="jumbotron text-center">
-            {PendingApi ? <Load/> : null}
-            <button className="btn btn-outline-primary mt-3" disabled={PendingApi} onClick={()=>setAddTables(true)}>
-            Verileri Hazırla</button>
+             <Load/>
+            
             
             </div>
             

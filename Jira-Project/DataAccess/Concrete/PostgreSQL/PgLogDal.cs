@@ -16,6 +16,7 @@ namespace DataAccess.Concrete.PostgreSQL
         public PgLogDal(AppDbContext context)
         {
             _context = context;
+
         }
 
 
@@ -36,9 +37,20 @@ namespace DataAccess.Concrete.PostgreSQL
         }
 
 
-        public Log ListLog(int id)        //GET
+        public List<ListLogsViewModel> ListLogsbyID(string id)        //GETLOGS BY ID
         {
-            return _context.Logs.Find(id);
+            var result = (from logs in _context.Logs
+                          where logs.BugID == id
+                          select new ListLogsViewModel
+                            {
+                                BugID = logs.BugID,
+                                Author = logs.Author,
+                                Created = logs.Created,
+                                Field = logs.Field,
+                                FromString = logs.FromString,
+                                toString = logs.toString
+                            }).ToList();
+            return result;
         }
 
 
@@ -84,6 +96,48 @@ namespace DataAccess.Concrete.PostgreSQL
 
             return result;
         }
+
+
+        public List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID)
+        {
+
+            //SET DICTIONARIES
+            Dictionary<int, string> fromString = new Dictionary<int, string>()
+            {
+                {1 , "To Do"},
+                {2 , "To Do"},
+                {3 , "In Progress"},
+                {4 , "In Progress"},
+                {5 , "Done"},
+                {6 , "Done"}
+            };
+
+            Dictionary<int, string> toString = new Dictionary<int, string>()
+            {
+                {1 , "In Progress"},
+                {2 , "Done"},
+                {3 , "To Do"},
+                {4 , "Done"},
+                {5 , "To Do"},
+                {6 , "In Progress"}
+            };
+
+
+                var result = (from logs in _context.Logs
+                where logs.FromString == fromString[statusID] && logs.toString == toString[statusID]
+                select new ListLogsViewModel
+                {
+                    BugID = logs.BugID,
+                    Author = logs.Author,
+                    Created = logs.Created,
+                    Field = logs.Field,
+                    FromString = logs.FromString,
+                    toString = logs.toString
+
+                }).ToList();
+
+            return result;
+        }   //FILTER BY STATUS
 
     }
 }

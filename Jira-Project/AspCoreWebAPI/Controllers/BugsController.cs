@@ -82,10 +82,9 @@ namespace AspCoreWebAPI.Controllers
                 JiraRequestManager.ProjectKey = projectKeyModel.ProjectKey;
                 return Ok("Proje Numarası Kaydedildi.");
             }
-            else
-            {
-                return BadRequest("Proje Numarası Geçersiz.");
-            }
+
+            return BadRequest("Proje Numarası Geçersiz");
+
         }
 
 
@@ -93,8 +92,8 @@ namespace AspCoreWebAPI.Controllers
         public IActionResult GetBugsFilterbyDate(int days)
         {
 
-                //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
-                 var BugsbyDate = _bugService.ListBugsFilterbyDate(days);
+            //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
+                var BugsbyDate = _bugService.ListBugsFilterbyDate(days);
 
                 GetBugsModel getBugsModel = new GetBugsModel
                 {

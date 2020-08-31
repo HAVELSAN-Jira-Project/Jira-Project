@@ -55,3 +55,13 @@ export const GetLogsFilterbyDate = (day)=>{
 
     return axios.get('https://localhost:44310/api/Logs/GetLogsFilterbyDate?day='+day); 
 }
+
+export const GetLogsFilterbyStatus = (statuID)=>{
+
+    return axios.get('https://localhost:44310/api/Logs/GetLogsFilterbyStatus?statusID='+statuID); 
+}
+
+export const GetLogsbyID = (bugID)=>{
+
+    return axios.get('https://localhost:44310/api/Logs/GetLogsbyID?id='+bugID); 
+}
