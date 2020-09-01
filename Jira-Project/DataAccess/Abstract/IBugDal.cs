@@ -8,13 +8,11 @@ namespace DataAccess.Abstract
 {
     public interface IBugDal
     {
-        Bug ListBug(int id);
-        bool Add(List<Bug> Bugs);
-        void ClearBugs();
-        List<ListBugsViewModel> ListBugsWithRebound();
-        List<ListBugsViewModel> ListBugsWithReboundFilterbyDate(DateTime targetTime);
-        List<ListBugsViewModel> ListBugsWithReboundFilterbySeverity(int severity);
-        List<ListBugsViewModel> ListSearchedBugs(string text);
+        JiraIssue ListBug(int id);
+        List<ListIssuesViewModel> ListBugsWithRebound();
+        List<ListIssuesViewModel> ListBugsWithReboundFilterbyDate(DateTime targetTime);
+        List<ListIssuesViewModel> ListBugsWithReboundFilterbySeverity(int severity);
+        List<ListIssuesViewModel> ListSearchedBugs(string text);
 
 
     }

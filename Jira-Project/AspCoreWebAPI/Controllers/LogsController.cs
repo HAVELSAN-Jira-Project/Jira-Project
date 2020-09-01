@@ -23,6 +23,7 @@ namespace AspCoreWebAPI.Controllers
         }
 
 
+
         [HttpGet("AddLogs")]
         public IActionResult AddLogs()
         {

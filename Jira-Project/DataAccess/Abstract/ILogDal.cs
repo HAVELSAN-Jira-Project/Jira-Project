@@ -9,11 +9,14 @@ namespace DataAccess.Abstract
     public interface ILogDal
     {
         List<ListLogsViewModel> ListLogs();
+        List<ListLogsViewModel> ListLogs(int id);
+        List<ListLogsViewModel> ListLogsFiltebyDate(DateTime limitDate);
+        List<ListLogsViewModel> ListLogsFiltebyDate(DateTime limitDate, int id);
+        List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID);
+        List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID, int id);
         List<ListLogsViewModel> ListLogsbyID(string id);
         bool Add(List<Log> Logs);
-        void ClearLogs();
-        List<ListLogsViewModel> ListLogsFiltebyDate(DateTime targetTime);
-        List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID);
+        public void ClearLogs();
 
 
     }

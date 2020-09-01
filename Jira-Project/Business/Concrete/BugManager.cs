@@ -10,6 +10,7 @@ using Entities.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 
+
 namespace Business.Concrete
 {
     public class BugManager : IBugService
@@ -25,97 +26,20 @@ namespace Business.Concrete
         }
 
 
-        public List<ListBugsViewModel> ListBugs()  //BUGLARI DBDEN ÇEK
+        public List<ListIssuesViewModel> ListBugs()  //BUGLARI DBDEN ÇEK
         {
-            List<ListBugsViewModel> ListBugs = _bugDal.ListBugsWithRebound();
+            List<ListIssuesViewModel> ListBugs = _bugDal.ListBugsWithRebound();
             return ListBugs;
         }
 
 
-        public bool AddBugs()  //BUGLARI DBYE EKLE
-        {
-            try
-            {
-                List<Bug> BugList = GetBugs();
-
-                if (!BugList.Any())
-                    return false;  //LİSTE BOŞ İSE FALSE DÖN
-
-                bool result = _bugDal.Add(BugList);  //DEĞİLSE DATAACCESSDEN DÖNEN SONUCU DÖN
-                return result;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-
-        private List<Bug> GetBugs()   //BUGLARI DÖNDÜR
-        {
-            int startAt = 0;
-            int totalValue = GetTotalValue();
-            List<Bug> bugList = new List<Bug>();
-
-
-            for (int i = totalValue; i > 0; i = i - 25)  //TOTAL = TOTAL-MAXRESULT
-            {
-                string response = _jiraRequestService.GetBugs(startAt);
-                Bugs bugs = JsonConvert.DeserializeObject<Bugs>(response);
-
-
-                foreach (Issue issue in bugs.Issues)  //REQUESTTE DÖNEN TÜM BUGLARI EKLE
-                {
-                    bugList.Add(new Bug
-                    {
-                        BugID = issue.Key,
-                        Summary = issue.Fields.Summary,
-                        Creator = issue.Fields.Creator.DisplayName,
-                        Created = issue.Fields.Created,
-                        LastUpdated = issue.Fields.Updated,
-                        Status = issue.Fields.Status.Name,
-                        Severity = (decimal?)issue.Fields.customfield_10029
-                    });
-
-                }     //TOTALVALUE-25 >0 İSE HALA BUG VAR DEMEK. DÖNGÜ BAŞA DÖNSÜN
-
-                startAt += 25;
-            }
-
-            return bugList;
-        }
-
-
-        private int GetTotalValue()  //TOTAL SAYISINI DÖNDÜR
-        {
-            string response = _jiraRequestService.GetTotal();
-            Total total = JsonConvert.DeserializeObject<Total>(response);
-
-            int totalValue = total.total;
-            return totalValue;
-        }
-
-
-        public bool ClearBugs()
-        {
-            try
-            {
-                _bugDal.ClearBugs();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }   //TRUNCATE TABLE
-
 
         //TARİH FİLTRESİ
-        public List<ListBugsViewModel> ListBugsFilterbyDate(int targetDate)
+        public List<ListIssuesViewModel> ListBugsFilterbyDate(int targetDate)
         {
             try
             {
-                var BugsbyDate = new List<ListBugsViewModel>();
+                var BugsbyDate = new List<ListIssuesViewModel>();
 
                 if (targetDate == 1000) //FİLTRE YOK, TÜMÜNÜ ÇEK
                     BugsbyDate = _bugDal.ListBugsWithRebound();
@@ -136,11 +60,11 @@ namespace Business.Concrete
 
 
         //SEVERİTY FİLTRESİ
-        public List<ListBugsViewModel> ListBugsFilterbySeverity(int severity)
+        public List<ListIssuesViewModel> ListBugsFilterbySeverity(int severity)
         {
             try
             {
-                var BugsbySeverity = new List<ListBugsViewModel>();
+                var BugsbySeverity = new List<ListIssuesViewModel>();
 
                 if (severity == 1000)
                     BugsbySeverity = _bugDal.ListBugsWithRebound();
@@ -160,11 +84,11 @@ namespace Business.Concrete
 
 
         //ARAMA 
-        public List<ListBugsViewModel> ListSearchedBugs(string text)
+        public List<ListIssuesViewModel> ListSearchedBugs(string text)
         {
             try
             {
-                var SearchedBugs = new List<ListBugsViewModel>();
+                var SearchedBugs = new List<ListIssuesViewModel>();
 
                 if (text == null || text == "")
                     SearchedBugs = _bugDal.ListBugsWithRebound();    //TÜM BUGLARI GETİR

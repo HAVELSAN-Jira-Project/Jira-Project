@@ -8,12 +8,11 @@ namespace Business.Abstract
 {
     public interface IBugService
     {
-        List<ListBugsViewModel> ListBugs();
-        bool AddBugs();
-        bool ClearBugs();
-        List<ListBugsViewModel> ListBugsFilterbyDate(int targetDate);
-        List<ListBugsViewModel> ListBugsFilterbySeverity(int severity);
-        List<ListBugsViewModel> ListSearchedBugs(string text);
+        List<ListIssuesViewModel> ListBugs();
+        
+        List<ListIssuesViewModel> ListBugsFilterbyDate(int targetDate);
+        List<ListIssuesViewModel> ListBugsFilterbySeverity(int severity);
+        List<ListIssuesViewModel> ListSearchedBugs(string text);
 
 
 

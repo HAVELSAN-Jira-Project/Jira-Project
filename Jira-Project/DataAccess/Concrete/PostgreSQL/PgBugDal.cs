@@ -24,81 +24,53 @@ namespace DataAccess.Concrete.PostgreSQL
 
 
 
-        public Bug ListBug(int id) //GET 
+        public JiraIssue ListBug(int id) //GET 
         {
-            return _context.Bugs.Find(id);
+            return _context.JiraIssues.Find(id);
         }
 
 
-        public bool Add(List<Bug> Bugs) //INSERT
-        {
-            try
-            {
-                foreach (Bug bug in Bugs)
-                {
-                    _context.Bugs.Add(bug);
 
+        public List<ListIssuesViewModel> ListBugsWithRebound()
+        {
+            List<ListIssuesViewModel> listBugs = new List<ListIssuesViewModel>();
+
+
+            foreach (JiraIssue bug in _context.JiraIssues.ToList())      //TÜM BUGLARIN HEPSİNİN REBOUNDUNU BUL
+            {
+                if (bug.Type == "Bug")
+                {
+                    listBugs.Add(new ListIssuesViewModel  //HER BUGU TEKER TEKER MODELE SETLE
+                    {
+                        IssueID = bug.IssueID,
+                        Summary = bug.Summary,
+                        Created = bug.Created,
+                        Creator = bug.Creator,
+                        Status = bug.Status,
+                        Severity = bug.Severity,
+
+                        //!!!!!
+                        Rebound = GetRebound(bug.IssueID)
+                    });
                 }
-
-                _context.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
-        }
-
-
-        public void ClearBugs() //TRUNCATE
-        {
-
-            _context.RemoveRange(_context.Bugs);
-            _context.SaveChanges();
-
-            //_context.Database.ExecuteSqlRaw("TRUNCATE TABLE Bugs");
-
-        }
-
-
-        public List<ListBugsViewModel> ListBugsWithRebound()
-        {
-            List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
-
-
-            foreach (Bug bug in _context.Bugs.ToList())      //TÜM BUGLARIN HEPSİNİN REBOUNDUNU BUL
-            {
-                listBugs.Add(new ListBugsViewModel  //HER BUGU TEKER TEKER MODELE SETLE
-                {
-                    BugID = bug.BugID,
-                    Summary = bug.Summary,
-                    Created = bug.Created,
-                    Creator = bug.Creator,
-                    Status = bug.Status,
-                    Severity = bug.Severity,
-
-                    //!!!!!
-                    Rebound = GetRebound(bug.BugID)
-                });
+               
             }
             return listBugs;   //MODELİ DÖNDÜR
         }  //LİST ALL BUGS
 
 
 
-        public List<ListBugsViewModel> ListBugsWithReboundFilterbyDate(DateTime targetTime)
+        public List<ListIssuesViewModel> ListBugsWithReboundFilterbyDate(DateTime targetTime)
         {
-            List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
+            List<ListIssuesViewModel> listBugs = new List<ListIssuesViewModel>();
 
-
-            foreach (Bug bug in _context.Bugs.ToList())      //TEK TEK HEPSİNİN REBOUNDUNU BUL
+            foreach (JiraIssue bug in _context.JiraIssues.ToList())      //TEK TEK HEPSİNİN REBOUNDUNU BUL
             {
-                if (DateTime.Compare(bug.Created, targetTime) > 0)   //CREATED, GELEN TARİHTEN İLERİ İSE
+                if (bug.Type == "Bug" && DateTime.Compare(bug.Created, targetTime) > 0)   //CREATED, GELEN TARİHTEN İLERİ İSE
                 {
-                    listBugs.Add(new ListBugsViewModel  //SADECE TARİH ŞARTINI SAĞLAYAN BUGLARI SETLE
+                    listBugs.Add(new ListIssuesViewModel  //SADECE TARİH ŞARTINI SAĞLAYAN BUGLARI SETLE
                     {
-                        BugID = bug.BugID,
+                        IssueID = bug.IssueID,
                         Summary = bug.Summary,
                         Created = bug.Created,
                         Creator = bug.Creator,
@@ -106,7 +78,7 @@ namespace DataAccess.Concrete.PostgreSQL
                         Severity = bug.Severity,
 
 
-                        Rebound = GetRebound(bug.BugID)
+                        Rebound = GetRebound(bug.IssueID)
                     });
                 }
 
@@ -116,18 +88,18 @@ namespace DataAccess.Concrete.PostgreSQL
 
 
 
-        public List<ListBugsViewModel> ListBugsWithReboundFilterbySeverity(int severity)
+        public List<ListIssuesViewModel> ListBugsWithReboundFilterbySeverity(int severity)
         {
-            List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
+            List<ListIssuesViewModel> listBugs = new List<ListIssuesViewModel>();
 
 
-            foreach (Bug bug in _context.Bugs.ToList())
+            foreach (JiraIssue bug in _context.JiraIssues.ToList())
             {
-                if (bug.Severity == severity)
+                if (bug.Type == "Bug" && bug.Severity == severity)
                 {
-                    listBugs.Add(new ListBugsViewModel  //SADECE SEVERİTY EŞLEŞEN KAYITLAR
+                    listBugs.Add(new ListIssuesViewModel  //SADECE SEVERİTY EŞLEŞEN KAYITLAR
                     {
-                        BugID = bug.BugID,
+                        IssueID = bug.IssueID,
                         Summary = bug.Summary,
                         Created = bug.Created,
                         Creator = bug.Creator,
@@ -135,7 +107,7 @@ namespace DataAccess.Concrete.PostgreSQL
                         Severity = bug.Severity,
 
 
-                        Rebound = GetRebound(bug.BugID)
+                        Rebound = GetRebound(bug.IssueID)
                     });
                 }
 
@@ -147,23 +119,23 @@ namespace DataAccess.Concrete.PostgreSQL
 
         private int GetRebound(string bugID)
         {
-            int reboundCount = _context.Logs.Where(x => x.BugID == bugID && x.FromString == "Done" && x.toString == "In Progress").Count();
+            int reboundCount = _context.Logs.Where(x => x.IssueID == bugID && x.FromString == "Done" && x.toString == "In Progress").Count();
             return reboundCount;
         }  //GET REBOUNDS
 
 
-        public List<ListBugsViewModel> ListSearchedBugs(string text)
+        public List<ListIssuesViewModel> ListSearchedBugs(string text)
         {
-            List<ListBugsViewModel> listBugs = new List<ListBugsViewModel>();
+            List<ListIssuesViewModel> listBugs = new List<ListIssuesViewModel>();
 
 
-            foreach (Bug bug in _context.Bugs.ToList())
+            foreach (JiraIssue bug in _context.JiraIssues.ToList())
             {
-                if (bug.Summary.ToLower().Contains(text.ToLower()))   //SUMMARY, GELEN STRİNGİ İÇERİYORSA LİSTEYE EKLE
+                if (bug.Type == "Bug" && bug.Summary.ToLower().Contains(text.ToLower()))   //SUMMARY, GELEN STRİNGİ İÇERİYORSA LİSTEYE EKLE
                 {
-                    listBugs.Add(new ListBugsViewModel
+                    listBugs.Add(new ListIssuesViewModel
                     {
-                        BugID = bug.BugID,
+                        IssueID = bug.IssueID,
                         Summary = bug.Summary,
                         Created = bug.Created,
                         Creator = bug.Creator,
@@ -171,7 +143,7 @@ namespace DataAccess.Concrete.PostgreSQL
                         Severity = bug.Severity,
 
                         //!!!!!
-                        Rebound = GetRebound(bug.BugID)
+                        Rebound = GetRebound(bug.IssueID)
                     });
                 }
 

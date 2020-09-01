@@ -26,31 +26,18 @@ namespace AspCoreWebAPI.Controllers
 
 
 
-        [HttpGet("AddBugs")]
-        public IActionResult AddBugs()
-        {
-            bool result = _bugService.AddBugs();
-
-            if (result)
-                return Ok("Buglar Başarıyla Veritabanına Eklendi.");
-            else
-                return BadRequest("Buglar Veritabanına Eklenemedi.");
-
-        }
-
-
 
         [HttpGet("GetBugs")]
         public IActionResult GetBugs()
         {
             try
             {
-                List<ListBugsViewModel> AllBugs = _bugService.ListBugs();
+                List<ListIssuesViewModel> AllBugs = _bugService.ListBugs();
 
-                GetBugsModel getbugsModel = new GetBugsModel
+                GetIssuesModel getbugsModel = new GetIssuesModel
                 {
-                    Bugs = AllBugs,
-                    BugCount = AllBugs.Count,
+                    Issues = AllBugs,
+                    IssueCount = AllBugs.Count,
                     ProjectKey = JiraRequestManager.ProjectKey,
                     TotalRebound = AllBugs.Sum(x => x.Rebound) //PROJEDEKİ TOPLAM REBOUND SAYISI
                 };
@@ -63,30 +50,6 @@ namespace AspCoreWebAPI.Controllers
         }
 
 
-        [HttpGet("ClearBugs")]
-        public IActionResult ClearBugs()
-        {
-            bool result = _bugService.ClearBugs();
-            if (result)
-                return Ok("Bugs Tablosu Sıfırlandı.");
-            else
-                return BadRequest("Bugs Tablosu Sıfırlanamadı.");
-        }
-
-
-        [HttpPost("ProjectKey")]
-        public IActionResult ProjectKey(ProjectKeyModel projectKeyModel)
-        {
-            if (ModelState.IsValid)
-            {
-                JiraRequestManager.ProjectKey = projectKeyModel.ProjectKey;
-                return Ok("Proje Numarası Kaydedildi.");
-            }
-
-            return BadRequest("Proje Numarası Geçersiz");
-
-        }
-
 
         [HttpGet("GetBugsFilterbyDate")]
         public IActionResult GetBugsFilterbyDate(int days)
@@ -95,10 +58,10 @@ namespace AspCoreWebAPI.Controllers
             //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
                 var BugsbyDate = _bugService.ListBugsFilterbyDate(days);
 
-                GetBugsModel getBugsModel = new GetBugsModel
+                GetIssuesModel getBugsModel = new GetIssuesModel
                 {
-                    Bugs = BugsbyDate,
-                    BugCount = BugsbyDate.Count,
+                    Issues = BugsbyDate,
+                    IssueCount = BugsbyDate.Count,
                     ProjectKey = JiraRequestManager.ProjectKey,
                     TotalRebound = BugsbyDate.Sum(x => x.Rebound)
                 };
@@ -115,10 +78,10 @@ namespace AspCoreWebAPI.Controllers
             //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
             var BugsbySeverity = _bugService.ListBugsFilterbySeverity(severity);
 
-            GetBugsModel getBugsModel = new GetBugsModel
+            GetIssuesModel getBugsModel = new GetIssuesModel
             {
-                Bugs = BugsbySeverity,
-                BugCount = BugsbySeverity.Count,
+                Issues = BugsbySeverity,
+                IssueCount = BugsbySeverity.Count,
                 ProjectKey = JiraRequestManager.ProjectKey,
                 TotalRebound = BugsbySeverity.Sum(x => x.Rebound)
             };
@@ -135,10 +98,10 @@ namespace AspCoreWebAPI.Controllers
             //BUSINESSA ERİŞİP DÖNEN VERİYİ DİREK MODELE SETLEYİP DÖNDER. GELEN VERİNİN KONTROLÜ BUSINESSDA
             var SearchedBugs = _bugService.ListSearchedBugs(text);
 
-                GetBugsModel getBugsModel = new GetBugsModel
+                GetIssuesModel getBugsModel = new GetIssuesModel
                 {
-                    Bugs = SearchedBugs,
-                    BugCount = SearchedBugs.Count,
+                    Issues = SearchedBugs,
+                    IssueCount = SearchedBugs.Count,
                     ProjectKey = JiraRequestManager.ProjectKey,
                     TotalRebound = SearchedBugs.Sum(x => x.Rebound)
                 };
