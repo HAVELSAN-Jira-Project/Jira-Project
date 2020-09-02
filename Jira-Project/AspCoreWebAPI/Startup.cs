@@ -36,12 +36,12 @@ namespace AspCoreWebAPI
             services.AddDbContext<AppDbContext>(options=>options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             //DEPENDENCY INEJCTION
-            services.AddScoped<IBugService, BugManager>();
+          
             services.AddScoped<ILogService, LogManager>();
             services.AddScoped<IIssueService, IssueManager>();
             services.AddScoped<IJiraRequestService, JiraRequestManager>();
 
-            services.AddScoped<IBugDal, PgBugDal>();
+            
             services.AddScoped<ILogDal, PgLogDal>();
             services.AddScoped<IIssueDal,PgIssueDal>();
 

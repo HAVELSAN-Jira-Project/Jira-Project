@@ -115,7 +115,7 @@ namespace Business.Concrete
 
                 else
                 {
-                    if (severity == 10000) //TÜM SEVERİTY DEĞERLERİ
+                    if (severity == 1000) //TÜM SEVERİTY DEĞERLERİ
                     {
                         IssuesbySeverity = _issueDal.ListIssuesWithRebound(IssueID);
                     }

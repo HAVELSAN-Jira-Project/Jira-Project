@@ -8,7 +8,8 @@ export default function Table(props) {
     return (
         <table className="table table-sm table-hover" id="AllLogsTable">
             <thead>
-            <th scope="col" className="text-center">Bug ID</th>
+                <th scope="col" className="text-center">Bug ID</th>
+                <th scope="col" className="text-center">Type</th>
                 <th scope="col" className="text-center">Author</th>
                 <th scope="col" className="text-center">Created</th>
                 <th scope="col" className="text-center">Field</th>
@@ -22,6 +23,7 @@ export default function Table(props) {
             {Logs.map(log=>(
                      <tr>
                          <td className="text-center"><small>{log.bugID}</small></td>
+                         <td className="text-center"><small>{log.type}</small></td>
                            <td className="text-center"><small>{log.author}</small></td>
                            <td className="text-center"><small>{log.created}</small></td>
                            <td className="text-center"><small>{log.field}</small></td>

@@ -5,19 +5,19 @@ export const GetBugs = ()=>{
     return axios.get('https://localhost:44310/api/Bugs/GetBugs');
 }
 
-export const AddBugs = ()=>{
+export const AddIssues = ()=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/AddBugs'); 
+    return axios.get('https://localhost:44310/api/Issues/AddIssues'); 
 }
 
-export const ClearBugs = ()=>{
+export const ClearIssues = ()=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/ClearBugs'); 
+    return axios.get('https://localhost:44310/api/Issues/ClearIssues'); 
 }
 
 export const PostProjectKey = (body)=>{
 
-    return axios.post('https://localhost:44310/api/Bugs/ProjectKey',body); 
+    return axios.post('https://localhost:44310/api/Issues/ProjectKey',body); 
 }
 
 export const GetLogs = (body)=>{
@@ -30,26 +30,36 @@ export const AddLogs = ()=>{
     return axios.get('https://localhost:44310/api/Logs/AddLogs'); 
 }
 
+
+
 export const ClearLogs = ()=>{
 
     return axios.get('https://localhost:44310/api/Logs/ClearLogs'); 
 }
 
 
-export const GetBugsFilterbyDate = (day)=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbyDate?days='+day); 
+export const GetIssuesFilterbyDate = (day)=>{
+
+    return axios.get('https://localhost:44310/api/Issues/GetIssuesFilterbyDate?days='+day); 
 }
 
-export const GetBugsFilterbySeverity = (severity)=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/GetBugsFilterbySeverity?severity='+severity); 
+
+export const GetIssuesFilterbySeverity = (severity)=>{
+
+    return axios.get('https://localhost:44310/api/Issues/GetIssuesFilterbySeverity?severity='+severity); 
 }
 
-export const GetSearchedBugs = (text)=>{
 
-    return axios.get('https://localhost:44310/api/Bugs/GetSearchedBugs?text='+text); 
+
+
+export const GetSearchedIssues = (text)=>{
+
+    return axios.get('https://localhost:44310/api/Issues/GetSearchedIssues?text='+text); 
 }
+
+
 
 export const GetLogsFilterbyDate = (day)=>{
 
@@ -65,3 +75,15 @@ export const GetLogsbyID = (bugID)=>{
 
     return axios.get('https://localhost:44310/api/Logs/GetLogsbyID?id='+bugID); 
 }
+
+
+export const ChangeIssue = (body)=>{
+    return axios.post('https://localhost:44310/api/Issues/IssueType',body); 
+}
+
+
+
+
+
+
+

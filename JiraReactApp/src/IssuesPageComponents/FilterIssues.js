@@ -2,9 +2,9 @@ import React from 'react'
 import {Row,Col} from 'reactstrap'
 import FilterLogo from '../Filter2.png'
 
-export default function FilterLogs(props) {
+export default function FilterIssues(props) {
     
-    const{DateValueChange,StatusValueChange} = props;
+    const{DateChange,SeverityChange,SearchInputChange,SearchButtonClick} = props;
     return (
        <Row>
            <Col md="1"></Col>
@@ -15,7 +15,7 @@ export default function FilterLogs(props) {
                     <Col md="3">
                         <div className="ml-5">
                         <h6 className="mr-5">Tarih</h6>
-                        <select className="form-control-sm" onChange={DateValueChange}>
+                        <select className="form-control-sm" onChange={DateChange}>
                                 <option value="1000">Tümü</option>
                                 <option value="1">Son 1 Gün</option>
                                 <option value="7">Son 1 Hafta</option>
@@ -26,26 +26,31 @@ export default function FilterLogs(props) {
                     </Col>
                     <Col md="2">
                     <div className=" mr-3">
-                        <h6 className="mr-5">Statü</h6>
-                        <select className="form-control-sm" onChange={StatusValueChange}>
+                        <h6 className="mr-5">Severity</h6>
+                        <select className="form-control-sm" onChange={SeverityChange}>
                                 <option value="1000">Tümü</option>
-                                <option value="1">To Do == In Progress</option>
-                                <option value="2">To Do == Done</option>
-                                <option value="3">In Progress == To Do</option>
-                                <option value="4">In Progress == Done</option>
-                                <option value="5">Done == To Do</option>
-                                <option value="6">Done == In Progress</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
                                 
                         </select>      
                         </div>
                     </Col>
                     <Col md="5" className="ml">
-                    
+                    <div className=" mr-3">
+                        <h6 className="mr-5">Arama</h6>
+                        <input onChange={SearchInputChange} type="text" className="form-control-sm" placeholder="Summary"></input>   
+
+                        <button type="button" className="btn btn-sm btn-outline-primary ml-4 mb-1"
+                        onClick={SearchButtonClick}>Filtrele</button> 
+                        </div>
                     </Col>
-                    <Col md="1"></Col>     
+                    <Col md="2"></Col>     
                     </div>
            </Col>
-           <Col md="2"></Col>
+           <Col md="1"></Col>
        </Row>
             
     )
