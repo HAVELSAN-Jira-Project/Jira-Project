@@ -4,7 +4,7 @@ import NotFound from './NotFound'
 import ProjectPage from './ProjectPageComponents/ProjectPage'
 import LoadingPage from './LoadingPageComponents/LoadingPage'
 import ErrorPage from './LoadingPageComponents/ErrorPage'
-import BugsPage from './IssuesPageComponents/IssuesPage'
+import IssuesPage from './IssuesPageComponents/IssuesPage'
 import LogsPage from './LogsPageComponent/LogsPage'
 import LogDetails from './LogsPageComponent/LogDetails'
 import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
@@ -20,7 +20,7 @@ export default function Router() {
                     <Route path="/ProjectKey" component={ProjectPage} />
                     <Route path="/GetData" component={LoadingPage} />
                     <Route path="/Error" component={ErrorPage} />
-                    <Route path="/Issues" component={BugsPage} />
+                    <Route path="/Issues" component={IssuesPage} />
                     <Route path="/Logs" component={LogsPage} />
                     <Route path="/LogDetails" component={LogDetails} />
                     <Redirect to="/Not-Found"/>
