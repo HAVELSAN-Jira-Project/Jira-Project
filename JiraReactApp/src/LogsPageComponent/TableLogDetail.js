@@ -20,7 +20,7 @@ export default function TableLogDetail(props) {
             <tbody>
                    {Logs.map(log=>(
                      <tr>
-                         <td className="text-center"><small>{log.bugID}</small></td>
+                           <td className="text-center"><small>{log.bugID}</small></td>
                            <td className="text-center"><small>{log.author}</small></td>
                            <td className="text-center"><small>{log.created}</small></td>
                            <td className="text-center"><small>{log.field}</small></td>

@@ -12,7 +12,7 @@ namespace Entities.Entities
             
         }
 
-        public DbSet<Bug> Bugs { get; set; }
+        public DbSet<JiraIssue> JiraIssues { get; set; }
         public DbSet<Log> Logs { get; set; }
 
     }

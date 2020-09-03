@@ -37,28 +37,28 @@ export default function LogDetails(props) {
 
             <LogDetailsInfo LogCount={Logs.logCount} BugID={BugID}  />
             <Row className="mt-3">
-                    <Col md="2"></Col>
-                    <Col md="8" className="text-right">
+                    <Col md="1"></Col>
+                    <Col md="10" className="text-right">
 
                     <ReactToExcel 
                             className="btn btn-sm btn-outline-primary"
-                            table="AllBugsTable"
-                            filename = "Bugs"
+                            table="SelectedLog"
+                            filename = "SelectedLogDetails"
                             sheet="Logs"
-                            buttonText="Excel" />   
+                            buttonText="Excel"/>   
 
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
             <Row className="mb-5">
-                    <Col md="2"></Col>
-                    <Col md="8">
+                    <Col md="1"></Col>
+                    <Col md="10">
                         <div className="d-flex mt-1 bg-white align-items-center rounded shadow-sm border border-primary">
                             
                            <TableLogDetail Logs={Logs.logs}/>
                         </div>
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
 
             </div>

@@ -17,20 +17,133 @@ namespace Business.Concrete
         private readonly IJiraRequestService _jiraRequestService;
         private readonly ILogDal _logDal;
 
+
+        //DEPENDENCY INJECTION
         public LogManager(IJiraRequestService jiraRequestService, ILogDal logDal)
         {
             _jiraRequestService = jiraRequestService;
             _logDal = logDal;
         }
 
-        public List<ListLogsViewModel> ListLogs()  //LOGLARI DBDEN ÇEK
+
+
+        //LOGLARI LİSTELE
+        public List<ListLogsViewModel> ListLogs()
         {
-            List<ListLogsViewModel> Logs = _logDal.ListLogs();
-            return Logs;
+            int IssueID = JiraRequestManager.IssueTypeID;
+
+            if (IssueID == 0)  //TÜM ISSUELAR
+            {
+                List<ListLogsViewModel> Logs = _logDal.ListLogs();
+                return Logs;
+            }
+            else    //GELEN ID'Lİ ISSUELAR
+            {
+                List<ListLogsViewModel> Logs = _logDal.ListLogs(IssueID);
+                return Logs;
+            }
+            
+            
+        } //!
+
+
+
+
+        //TARİHE GÖRE FİLTRELE
+        public List<ListLogsViewModel> ListLogsFilterbyDate(int day)
+        {
+           
+            try
+            {
+                int IssueID = JiraRequestManager.IssueTypeID;
+                List<ListLogsViewModel> GetLogs = new List<ListLogsViewModel>();
+
+
+                if (IssueID == 0)
+                {
+                    if (day == 1000)
+                    {
+                        GetLogs = _logDal.ListLogs();  //TÜM LOGLARI ÇEK
+                    }
+                    else
+                    {
+                        DateTime limitDate = DateTime.Now.AddDays(-day);
+                        GetLogs = _logDal.ListLogsFiltebyDate(limitDate);  //TARİHE UYAN TÜM ISSUELARI GETİR
+                    }
+                   
+                }
+
+                else
+                {
+                    if (day == 1000)
+                        GetLogs = _logDal.ListLogs(IssueID);  //ISSUE TİPİ UYAN TÜM LOGLARI ÇEK
+
+                    else
+                    {
+                        DateTime limitDate = DateTime.Now.AddDays(-day);  //ISSUE TİPİNE VE TARİHE GÖRE FİLTRELE
+                        GetLogs = _logDal.ListLogsFiltebyDate(limitDate, IssueID);
+                    }
+                }
+
+
+                return GetLogs;
+            }
+            catch
+            {
+                throw new ApplicationException("Loglar Tarihe Göre Filtrelenemedi.");
+            }
         }
 
 
-        public List<ListLogsViewModel> ListLogsbyID(string id)  //LİST LOGS BY ID
+
+
+        //STATÜYE GÖRE FİLTRELE
+        public List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID)
+        {
+            try
+            {
+                int IssueID = JiraRequestManager.IssueTypeID;
+                var getLogs = new List<ListLogsViewModel>();
+
+
+                if (IssueID == 0)  //TÜM LOGLARI GETİR 
+                {
+                    if (statusID == 1000) //TARİH FİLTRESİ YOK
+                    {
+                        getLogs = _logDal.ListLogs();
+                    }
+                    else  //TARİH FİLTRESİ VAR 
+                    {
+                        getLogs = _logDal.ListLogsFilterbyStatus(statusID);
+                    }
+                }
+                else  //ISSUE TİPİ UYAN LOGLARI GETİR
+                {
+                    if (statusID == 1000)
+                    {
+                        getLogs = _logDal.ListLogs(IssueID);
+                    }
+                    else
+                    {
+                        getLogs = _logDal.ListLogsFilterbyStatus(statusID, IssueID);
+                    }
+                }
+
+                return getLogs;
+            }
+            catch
+            {
+                throw new ApplicationException("Loglar Statüye Göre Filtrelenemedi");
+            }
+        }  
+
+
+
+
+
+
+        //ISSUE IDYE GÖRE LOGLARI LİSTELE
+        public List<ListLogsViewModel> ListLogsbyID(string id)
         {
             if (id == null)
             {
@@ -39,14 +152,18 @@ namespace Business.Concrete
 
             var result = _logDal.ListLogsbyID(id);
             return result;
-        }
+        }  //!
 
 
-        public bool AddLogs()     //LOGLARI DBYE EKLE
+
+
+        //LOGLARI DBYE EKLE
+        public bool AddLogs()   
         {
             try
             {
                 List<Log> LogList = GetLogs();
+
                 if (!LogList.Any())
                     return false;   //LİSTE BOŞ İSE FALSE DÖN
 
@@ -54,14 +171,19 @@ namespace Business.Concrete
                 bool result = _logDal.Add(LogList);
                 return result;
             }
-            catch
+            catch 
             {
-                throw new ApplicationException("Bir Hata Oluştu");
+                throw new ApplicationException("Loglar Veritabanına Eklenemedi");
             }
-        }
+            
+           
+        }  //!
 
 
-        private List<Log> GetLogs()  //LOGLARI DÖNDÜR
+
+
+        //JİRADAN LOGLARI ÇEK, AYIKLA
+        private List<Log> GetLogs()  
         {
             int startAt = 0;
             int totalValue = GetTotalValue();
@@ -72,7 +194,7 @@ namespace Business.Concrete
                 string response = _jiraRequestService.GetBugs(startAt);
                 Bugs bugs = JsonConvert.DeserializeObject<Bugs>(response);
 
-                foreach (Issue issue in bugs.Issues)
+                foreach (var issue in bugs.Issues)
                 {
                     foreach (History history in issue.ChangeLog.Histories)
                     {
@@ -83,12 +205,13 @@ namespace Business.Concrete
                                 logList.Add(new Log()
                                 {
 
-                                    BugID = issue.Key,
-                                    Author = history.Author.DisplayName,  //KİM DEĞİŞMİŞ
-                                    Created = history.Created,        //NE ZAMAN DEĞİŞMİŞ
-                                    Field = item.Field,                   //NEREYİ DEĞİŞMİŞ
-                                    FromString = item.FromString,         //ÖNCEKİ DURUMU
-                                    toString = item.toString              //SONRAKİ DURUMU
+                                    IssueID = issue.Key,
+                                    Author = history.Author.DisplayName,     //KİM DEĞİŞMİŞ
+                                    LogType = issue.Fields.issuetype.name,   //ISSUE TİPİ
+                                    Created = history.Created,               //NE ZAMAN DEĞİŞMİŞ
+                                    Field = item.Field,                      //NEREYİ DEĞİŞMİŞ
+                                    FromString = item.FromString,            //ÖNCEKİ DURUMU
+                                    toString = item.toString                 //SONRAKİ DURUMU
 
                                 });
                             }
@@ -100,19 +223,25 @@ namespace Business.Concrete
             }
 
             return logList;
-        }
+        } //!
 
 
-        private int GetTotalValue()  //TOTALVALUE DÖNDÜR
+
+
+        //JİRADAN TOTALVALUE DEĞERİNİ DÖNDÜR
+        private int GetTotalValue()  
         {
             string response = _jiraRequestService.GetTotal();
             Total total = JsonConvert.DeserializeObject<Total>(response);
 
             int totalValue = total.total;
             return totalValue;
-        }
+        } //!
 
 
+
+
+        //LOGS TABLOSUNUZ TEMİZLE
         public bool ClearLogs()
         {
             try
@@ -124,50 +253,12 @@ namespace Business.Concrete
             {
                 return false;
             }
-        }  //TRUNCATE TABLE
+        }  //!
 
 
-        public List<ListLogsViewModel> ListLogsFilterbyDate(int day)
-        {
-            try
-            {
-                List<ListLogsViewModel> GetLogs = new List<ListLogsViewModel>();
-
-                if (day == 1000)
-                    GetLogs = _logDal.ListLogs();  //FİLTER YOK, TÜM LOGLARI ÇEK
-                else
-                {
-                   DateTime limitDate = DateTime.Now.AddDays(-day);
-                   GetLogs = _logDal.ListLogsFiltebyDate(limitDate);
-                }
-
-                return GetLogs;
-            }
-            catch
-            {
-                throw new ApplicationException("Loglar Tarihe Göre Filtrelenemedi.");
-            }
-        }  //FILTER BY DATE
+       
 
 
-        public List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID)
-        {
-            try
-            {
-                var getLogs = new List<ListLogsViewModel>();
-
-                if (statusID == 1000)   //FİLTRE YOK, TÜMÜNÜ GETİR
-                    getLogs = _logDal.ListLogs();
-                else                    //FİLTREYE GÖRE GETİR
-                    getLogs = _logDal.ListLogsFilterbyStatus(statusID);
-
-
-                return getLogs;
-            }
-            catch
-            {
-                throw new ApplicationException("Loglar Statüye Göre Filtrelenemedi");
-            }
-        }  //FILTER BY STATUS
+       
     }
 }

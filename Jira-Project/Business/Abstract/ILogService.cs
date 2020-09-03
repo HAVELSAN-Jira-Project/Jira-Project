@@ -9,11 +9,12 @@ namespace Business.Abstract
     public interface ILogService
     {
         List<ListLogsViewModel> ListLogs();
-        bool AddLogs();
-        bool ClearLogs();
         List<ListLogsViewModel> ListLogsFilterbyDate(int day);
         List<ListLogsViewModel> ListLogsFilterbyStatus(int statusID);
         List<ListLogsViewModel> ListLogsbyID(string id);
+        bool AddLogs();
+        bool ClearLogs();
+
 
     }
 }

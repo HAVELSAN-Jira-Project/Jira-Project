@@ -9,5 +9,6 @@ namespace Business.JiraDeserializeModels.Bugs
         public Fields Fields { get; set; }
         public string Key { get; set; }
         public ChangeLog ChangeLog { get; set; }
+        public string IssueID { get; set; }
     }
 }

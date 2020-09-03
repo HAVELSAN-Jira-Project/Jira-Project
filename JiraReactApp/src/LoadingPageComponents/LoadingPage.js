@@ -1,7 +1,7 @@
 import React, {useState,useEffect } from 'react'
 import Header from '../IntroComponents/Header'
 import Load from './Load'
-import {ClearBugs,ClearLogs,AddBugs,AddLogs} from '../Requests/Requests'
+import {ClearIssues,ClearLogs,AddIssues,AddLogs,ChangeIssue} from '../Requests/Requests'
 
 
 
@@ -14,26 +14,37 @@ export default function LoadingPage(props) {
     const[AddTables,setAddTables] = useState(true);        //TABLOLARIN SETLENMESİ İÇİN
  
     const[PendingApi,setPendingApi] = useState(false);
+
+    const[IssueID,setIssueID] = useState({IssueID : 0});
     
       
     
     
-    //VERİTABANI EKLEME REQUESTLERİ
+    //VERİTABANI  İŞLEMLERİ
     useEffect(()=>{  
         if(AddTables){
             setPendingApi(true) //YÜKLEME EKRANINI AÇ
             ClearLogs()
             .then(response=>{
-                ClearBugs()
+                ClearIssues()
                 .then(response=>{
-                    AddBugs()
+                    AddIssues()
                     .then(response=>{
                         AddLogs()
                         .then(response=>{
-                            setTimeout(() => {
-                                setAddTables(false);
-                                props.history.push('/Bugs')
-                                }, 1500);
+                            ChangeIssue(IssueID)
+                            .then(response=>{
+                                setTimeout(() => {
+                                    setAddTables(false);
+                                    props.history.push('/Issues')
+                                    }, 1500);
+                            })
+                            .catch(error=>{
+                                setTimeout(() => {
+                                    props.history.push('/Error')
+                                    }, 1500);
+                            })
+                            
                         })
                         .catch(error=>{
                             setTimeout(() => {

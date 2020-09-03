@@ -7,10 +7,10 @@ using Entities.Entities;
 
 namespace AspCoreWebAPI.Models
 {
-    public class GetBugsModel
+    public class GetIssuesModel
     {
-        public List<ListBugsViewModel> Bugs { get; set; }
-        public int BugCount { get; set; }
+        public List<ListIssuesViewModel> Issues { get; set; }
+        public int IssueCount { get; set; }
         public string ProjectKey { get; set; }
         public int TotalRebound { get; set; }
     }

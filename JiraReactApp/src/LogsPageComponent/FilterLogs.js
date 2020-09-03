@@ -7,8 +7,8 @@ export default function FilterLogs(props) {
     const{DateValueChange,StatusValueChange} = props;
     return (
        <Row>
-           <Col md="2"></Col>
-           <Col md="8">
+           <Col md="1"></Col>
+           <Col md="10">
            <div className="d-flex bg-white align-items-center p-3 my-3 rounded shadow-sm border border-primary">
                     <img src={FilterLogo} width={60} height={60} className=" mr-4 img-fluid" alt="Info" />
                     <h5>Filtrele</h5>
@@ -42,7 +42,7 @@ export default function FilterLogs(props) {
                     <Col md="5" className="ml">
                     
                     </Col>
-                    <Col md="2"></Col>     
+                    <Col md="1"></Col>     
                     </div>
            </Col>
            <Col md="2"></Col>

@@ -5,16 +5,17 @@ using System.Text;
 
 namespace Entities.Entities
 {
-    public class Bug
+    public class JiraIssue
     {
-        public Bug()
+        public JiraIssue()
         {
             Logs = new List<Log>();
         }
 
         [Key]
-        public string BugID { get; set; }
+        public string IssueID { get; set; }
         public string Summary { get; set; }
+        public string Type { get; set; }
         public string Creator { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastUpdated { get; set; }

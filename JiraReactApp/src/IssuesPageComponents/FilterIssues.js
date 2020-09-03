@@ -2,13 +2,13 @@ import React from 'react'
 import {Row,Col} from 'reactstrap'
 import FilterLogo from '../Filter2.png'
 
-export default function FilterBugs(props) {
+export default function FilterIssues(props) {
     
     const{DateChange,SeverityChange,SearchInputChange,SearchButtonClick} = props;
     return (
        <Row>
-           <Col md="2"></Col>
-           <Col md="8">
+           <Col md="1"></Col>
+           <Col md="10">
            <div className="d-flex bg-white align-items-center p-3 my-3 rounded shadow-sm border border-primary">
                     <img src={FilterLogo} width={60} height={60} className=" mr-4 img-fluid" alt="Info" />
                     <h5>Filtrele</h5>
@@ -50,7 +50,7 @@ export default function FilterBugs(props) {
                     <Col md="2"></Col>     
                     </div>
            </Col>
-           <Col md="2"></Col>
+           <Col md="1"></Col>
        </Row>
             
     )

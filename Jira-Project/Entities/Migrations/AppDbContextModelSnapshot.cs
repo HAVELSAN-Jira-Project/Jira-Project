@@ -19,9 +19,9 @@ namespace Entities.Migrations
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Entities.Entities.Bug", b =>
+            modelBuilder.Entity("Entities.Entities.JiraIssue", b =>
                 {
-                    b.Property<string>("BugID")
+                    b.Property<string>("IssueID")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
@@ -42,9 +42,12 @@ namespace Entities.Migrations
                     b.Property<string>("Summary")
                         .HasColumnType("text");
 
-                    b.HasKey("BugID");
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
 
-                    b.ToTable("Bugs");
+                    b.HasKey("IssueID");
+
+                    b.ToTable("JiraIssues");
                 });
 
             modelBuilder.Entity("Entities.Entities.Log", b =>
@@ -57,9 +60,6 @@ namespace Entities.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("text");
 
-                    b.Property<string>("BugID")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
@@ -69,21 +69,27 @@ namespace Entities.Migrations
                     b.Property<string>("FromString")
                         .HasColumnType("text");
 
+                    b.Property<string>("IssueID")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LogType")
+                        .HasColumnType("text");
+
                     b.Property<string>("toString")
                         .HasColumnType("text");
 
                     b.HasKey("LogID");
 
-                    b.HasIndex("BugID");
+                    b.HasIndex("IssueID");
 
                     b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Entities.Entities.Log", b =>
                 {
-                    b.HasOne("Entities.Entities.Bug", "Bug")
+                    b.HasOne("Entities.Entities.JiraIssue", "Issue")
                         .WithMany("Logs")
-                        .HasForeignKey("BugID");
+                        .HasForeignKey("IssueID");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,9 +2,24 @@
 
 Havelsan'da Yapmakta Olduğum Yaz Stajı Dahilinde Geliştirdiğim Projenin Kaynak Kodlarına Buradan Ulaşabilirsiniz. Proje .NET Core Platformunda, ASP .NET Core Web API mimarisi üzerine yazılmaktadır.
 
+
+## Veritabanı
+
+Veritabanını lokal bilgisayarınızda kurmak için solution içerisindeki Entity projesine girip, içerisindeki migrations
+isimli klasörü siliniz. Sonrasında Asp Net Core projesinin başlangıç projesi olarak seçili olduğundan emin olduktan
+sonra, package manager console'u açınız, ve entity katmanı için;
+
+> Add-Migration InıtıalCreate
+
+> Update-Database 
+
+
+Komutlarını Giriniz. Veritabanı bilgisayarınızda kurulacaktır.
+
+
 ## Backend
 
-Projenin Backend Kısmında, .Net Core SDK 3.1 Sürümü Kullanılmıştır. Projeyi Çalıştırabilmek İçin Kurulması Gerekmektedir.
+Projenin Backend Kısmında, .Net Core SDK 3.1 Sürümü Kullanılmıştır. 
 
 Projede Kullanılan Paket ve Kütüphaneler
 
@@ -19,8 +34,11 @@ Projede Kullanılan Paket ve Kütüphaneler
 
 ## Frontend
 
+
 Projenin Frontend tarafında JavaScript Kütüphanesi Olarak React.js Kullanılmıştır. Github'a pushlanmış olan
 JiraReactApp dosyasını indirip Visual Code veya Başka Bir Editörde Açılması Gerekmektedir.
+
+Bilgisayarınızda Node.js kurulu olduğundan emin olunuz.
 
 ### React.js Kurulumu
 

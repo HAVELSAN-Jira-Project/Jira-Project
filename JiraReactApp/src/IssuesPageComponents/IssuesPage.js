@@ -1,20 +1,25 @@
 import React from 'react'
 import Header from '../IntroComponents/Header'
-import BugInfo from './BugInfo'
-import FilterBugs from './FilterBugs'
+import BugInfo from './IssuesInfo'
+import FilterBugs from './FilterIssues'
 import {Row,Col} from 'reactstrap'
 import {useState,useEffect} from 'react'
 import Table from './Table'
-import {GetBugsFilterbyDate,GetBugsFilterbySeverity,GetSearchedBugs} from '../Requests/Requests'
+import {GetIssuesFilterbyDate,GetIssuesFilterbySeverity,GetSearchedIssues,ChangeIssue} from '../Requests/Requests'
 import ReactToExcel from 'react-html-table-to-excel'
 
 
-export default function MainPage(props) {
+export default function IssuesPage(props) {
 
-    const [Bugs,setBugs] = useState({bugs : [], BugCount : 0, ProjectKey : "", totalRebound : 0});
+    const [Issues,setIssues] = useState({issues : [], issueCount : 0, projectKey : "", totalRebound : 0});
     const[DateValue,setDateValue] = useState(1000);
     const[SeverityValue,setSeverityValue] = useState(1000);
     const[Searchtext,setSearchText] = useState(null);
+
+
+    const[IssueTypeID,setIssueTypeID] = useState(0);
+    const[IssueChange,setIssueChange] = useState(true);
+    
 
 
     //BUTTON SPINNERS
@@ -28,9 +33,9 @@ export default function MainPage(props) {
     useEffect(()=>{  //TARİH DEĞİŞTİĞİNDE STATE'E SETLE,REQEUST AT.DÖNEN LİSETYİ BUGSA SETLE. 
                      //BUGS İÇERİĞİ DEĞİŞTİĞİNDE, COMPONENT YENİDEN RENDER EDİLİR.
                      
-        GetBugsFilterbyDate(DateValue)
+        GetIssuesFilterbyDate(DateValue)
         .then(response=>{
-            setBugs(response.data)
+            setIssues(response.data)
         })
         .catch(error=>{
             props.history.push("/Error")
@@ -42,15 +47,58 @@ export default function MainPage(props) {
     useEffect(()=>{  //SEVERİTY DEĞİŞTİĞİNDE STATE'E SETLE,REQEUST AT.DÖNEN LİSETYİ BUGSA SETLE. 
                      //BUGS İÇERİĞİ DEĞİŞTİĞİNDE, COMPONENT YENİDEN RENDER EDİLİR.
 
-        GetBugsFilterbySeverity(SeverityValue)
+         GetIssuesFilterbySeverity(SeverityValue)
         .then(response=>{
-            setBugs(response.data)
+            setIssues(response.data)
         })
         .catch(error=>{
             props.history.push("/Error")
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[SeverityValue])  //SEVERİTY DEĞİŞTİĞİ ANDA TETİKLEN
+
+
+
+    useEffect(()=>{    //ISSUE TİPİ DEĞİŞTİĞİNDE STATE'E SETLE, REQUEST AT VE SAYFAYI YENİLE.
+
+            if(IssueChange===true){
+                const body = {
+                    IssueID : IssueTypeID
+                };
+        
+                ChangeIssue(body)
+                .then(response=>{
+                    GetIssuesFilterbyDate(1000)
+                    .then(response=>{
+                        setIssueChange(false)
+                        setIssues(response.data)
+                    })
+                    .catch(error=>{
+                        props.history.push("/Error")
+                    })
+                })
+                .catch(error=>{
+                    props.history.push("/Error")
+                })
+            }
+            
+        
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[IssueTypeID])   //ISSUE ID DEĞİŞTİĞİ ANDA TETİKLEN
+
+
+    const IssueTypeChange = (event)=>{
+        const value = event.target.value;
+        setIssueChange(true);
+
+        setTimeout(()=>{
+            setIssueTypeID(parseInt(value))
+            setDateValue(1000)
+        },50);
+        
+        
+    }
 
 
     const DateChange = (event)=>{ 
@@ -70,9 +118,9 @@ export default function MainPage(props) {
     }
 
     const SearchButtonClick = ()=>{  //BUTONA TIKLANDIĞINDA REQUEST AT
-        GetSearchedBugs(Searchtext)
+        GetSearchedIssues(Searchtext)
         .then(response=>{
-            setBugs(response.data)
+            setIssues(response.data)
         })
         .catch(error=>{
             props.history.push("/Error")
@@ -129,16 +177,19 @@ export default function MainPage(props) {
             <Header />
             <div className="BugPage container-fluid bg-light">
                 
-                <BugInfo  BugCount = {Bugs.bugCount} ProjectKey = {Bugs.projectKey} />   
+                <BugInfo  BugCount = {Issues.issueCount} ProjectKey = {Issues.projectKey} IssueTypeChange={IssueTypeChange}
+                IssueTypeID = {IssueTypeID}/>  
+                
+
                 <FilterBugs SearchInputChange={SearchInputChange} SearchButtonClick={SearchButtonClick}  
                 DateChange = {DateChange} SeverityChange={SeverityChange}/>
 
                 <Row className="my-1">
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                     <Col md="2">
-                        <small>Totalde <b>{Bugs.totalRebound}</b> Rebound</small>
+                        <small>Totalde <b>{Issues.totalRebound}</b> Rebound</small>
                     </Col>
-                    <Col md="6" className="text-right">
+                    <Col md="8" className="text-right">
 
                     <ReactToExcel 
                             className="btn btn-sm btn-outline-primary mr-2"
@@ -165,19 +216,19 @@ export default function MainPage(props) {
                         :null} Tüm Loglar</button>
 
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
 
                 <Row className="mb-5">
-                    <Col md="2"></Col>
-                    <Col md="8">
+                    <Col md="1"></Col>
+                    <Col md="10">
                         <div className="d-flex bg-white align-items-center  rounded shadow-sm border border-primary">
 
-                           <Table Bugs={Bugs.bugs} LogButtonClick={LogButtonClick} LogDetailButtonDisable={LogDetailButtonDisable} />
+                           <Table Bugs={Issues.issues} LogButtonClick={LogButtonClick} LogDetailButtonDisable={LogDetailButtonDisable} />
 
                         </div>
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
             </div>          
         </div>

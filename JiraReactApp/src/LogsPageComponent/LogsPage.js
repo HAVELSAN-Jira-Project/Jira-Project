@@ -93,7 +93,7 @@ export default function LogsPage(props) {
         setTimeout(()=>{
 
             setBugsButton(false);
-            props.history.push("/Bugs");
+            props.history.push("/Issues");
         },1500)
     }
 
@@ -109,8 +109,8 @@ export default function LogsPage(props) {
                 <FilterLogs DateValueChange={DateValueChange} StatusValueChange={StatusValueChange}/>
 
                 <Row className="my-1">
-                    <Col md="2"></Col>
-                    <Col md="8" className="text-right">
+                    <Col md="1"></Col>
+                    <Col md="10" className="text-right">
 
                         
                         <ReactToExcel 
@@ -141,17 +141,17 @@ export default function LogsPage(props) {
                             :null } Tüm Buglar</button>
 
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
 
                 <Row className="mb-5">
-                    <Col md="2"></Col>
-                    <Col md="8">
+                    <Col md="1"></Col>
+                    <Col md="10">
                     <div className="d-flex bg-white align-items-center  rounded shadow-sm border border-primary">
                            <TableLogs Logs={Logs.logs}/>
                         </div>
                     </Col>
-                    <Col md="2"></Col>
+                    <Col md="1"></Col>
                 </Row>
                
             </div>

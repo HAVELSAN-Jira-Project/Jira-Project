@@ -7,6 +7,7 @@ namespace DataAccess.ViewModels
     public class ListLogsViewModel
     {
         public string BugID { get; set; }
+        public string Type { get; set; }
         public string Author { get; set; }
         public DateTime Created { get; set; }
         public string Field { get; set; }
