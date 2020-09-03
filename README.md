@@ -5,7 +5,7 @@ Havelsan'da Yapmakta Olduğum Yaz Stajı Dahilinde Geliştirdiğim Projenin Kayn
 
 ## Veritabanı
 
-Veritabanını lokal bilgisayarınızda kurmak için solution içerisindeki Entity projesine girip, içerisindeki migrations
+Veritabanını lokal bilgisayarınızda kurmak için solution içerisindeki Entities projesine girip, içerisindeki migrations
 isimli klasörü siliniz. Sonrasında Asp Net Core projesinin başlangıç projesi olarak seçili olduğundan emin olduktan
 sonra, package manager console'u açınız, ve entity katmanı için;
 
