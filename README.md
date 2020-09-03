@@ -19,7 +19,7 @@ Komutlarını Giriniz. Veritabanı bilgisayarınızda kurulacaktır.
 
 ## Backend
 
-Projenin Backend Kısmında, .Net Core SDK 3.1 Sürümü Kullanılmıştır. Projeyi Çalıştırabilmek İçin Kurulması Gerekmektedir.
+Projenin Backend Kısmında, .Net Core SDK 3.1 Sürümü Kullanılmıştır. 
 
 Projede Kullanılan Paket ve Kütüphaneler
 
