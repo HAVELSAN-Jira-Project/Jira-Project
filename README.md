@@ -7,12 +7,14 @@ Havelsan'da Yapmakta Olduğum Yaz Stajı Dahilinde Geliştirdiğim Projenin Kayn
 
 Veritabanını lokal bilgisayarınızda kurmak için solution içerisindeki Entity projesine girip, içerisindeki migrations
 isimli klasörü siliniz. Sonrasında Asp Net Core projesinin başlangıç projesi olarak seçili olduğundan emin olduktan
-sonra, package manager console'u açınız, ve entity katmanı için şu komutları giriniz.
+sonra, package manager console'u açınız, ve entity katmanı için;
 
 > Add-Migration InıtıalCreate
-> Update-Database
 
-Veritabanı bilgisayarınızda kurulacaktır.
+> Update-Database 
+
+
+Komutlarını Giriniz. Veritabanı bilgisayarınızda kurulacaktır.
 
 
 ## Backend
