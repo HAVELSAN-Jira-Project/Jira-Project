@@ -2,6 +2,19 @@
 
 Havelsan'da Yapmakta Olduğum Yaz Stajı Dahilinde Geliştirdiğim Projenin Kaynak Kodlarına Buradan Ulaşabilirsiniz. Proje .NET Core Platformunda, ASP .NET Core Web API mimarisi üzerine yazılmaktadır.
 
+
+## Veritabanı
+
+Veritabanını lokal bilgisayarınızda kurmak için solution içerisindeki Entity projesine girip, içerisindeki migrations
+isimli klasörü siliniz. Sonrasında Asp Net Core projesinin başlangıç projesi olarak seçili olduğundan emin olduktan
+sonra, package manager console'u açınız, ve entity katmanı için şu komutları giriniz.
+
+> Add-Migration InıtıalCreate
+> Update-Database
+
+Veritabanı bilgisayarınızda kurulacaktır.
+
+
 ## Backend
 
 Projenin Backend Kısmında, .Net Core SDK 3.1 Sürümü Kullanılmıştır. Projeyi Çalıştırabilmek İçin Kurulması Gerekmektedir.
