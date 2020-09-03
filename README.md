@@ -34,8 +34,11 @@ Projede Kullanılan Paket ve Kütüphaneler
 
 ## Frontend
 
+
 Projenin Frontend tarafında JavaScript Kütüphanesi Olarak React.js Kullanılmıştır. Github'a pushlanmış olan
 JiraReactApp dosyasını indirip Visual Code veya Başka Bir Editörde Açılması Gerekmektedir.
+
+Bilgisayarınızda Node.js kurulu olduğundan emin olunuz.
 
 ### React.js Kurulumu
 
